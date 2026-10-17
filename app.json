@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "ShikshaSaathi",
+    "slug": "shikshasaathi",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "com.shikshasaathi.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#1E293B"
+      }
+    }
+  }
+}
