@@ -22,8 +22,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Expo Prebuild (Generate Android Native Project)
-        run: npx expo prebuild --platform android --clean
+      - name: Expo Prebuild
+        run: npx expo prebuild --platform android --clean --non-interactive
+
+      - name: Fix Memory and Disable Jetifier
+        run: |
+          echo "android.enableJetifier=false" >> android/gradle.properties
+          echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -XX:+UseG1GC" >> android/gradle.properties
 
       - name: Inject Native LiteRT-LM Kotlin Bridge
         run: |
@@ -35,7 +40,6 @@ jobs:
           import android.content.Context
           import android.os.StatFs
           import com.facebook.react.bridge.*
-          import java.io.File
 
           class LiteRTLMModule(private val reactContext: ReactApplicationContext) :
               ReactContextBaseJavaModule(reactContext) {
@@ -75,7 +79,7 @@ jobs:
               @ReactMethod
               fun generateTutorResponse(userPrompt: String, systemPrompt: String, promise: Promise) {
                   val result = Arguments.createMap().apply {
-                      putString("text", "🌟 Excellent question! Remember that concepts in your GSEB syllabus connect directly to what you see around you in Gujarat. Practice regularly!")
+                      putString("text", "🌟 Keep up the great work! Always connect your science and math concepts to things you observe in daily life.")
                       putBoolean("onDevice", true)
                   }
                   promise.resolve(result)
@@ -92,28 +96,29 @@ jobs:
           cat << 'EOF' > android/app/src/main/java/com/shikshasaathi/app/litertlm/LiteRTLMPackage.kt
           package com.shikshasaathi.app.litertlm
 
-          import android.view.View
           import com.facebook.react.ReactPackage
           import com.facebook.react.bridge.NativeModule
           import com.facebook.react.bridge.ReactApplicationContext
-          import com.facebook.react.uimanager.ReactShadowNode
           import com.facebook.react.uimanager.ViewManager
 
           class LiteRTLMPackage : ReactPackage {
               override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
                   return listOf(LiteRTLMModule(reactContext))
               }
-              override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<View, ReactShadowNode<*>>> {
+              override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
                   return emptyList()
               }
           }
           EOF
 
-      - name: Build Android APK
+      - name: Grant Execute Permission to Gradle
+        run: chmod +x android/gradlew
+
+      - name: Build Android Debug APK
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
 
-      - name: Upload APK to GitHub
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ShikshaSaathi-App-APK
