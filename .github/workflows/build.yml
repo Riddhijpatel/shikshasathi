@@ -47,7 +47,6 @@ jobs:
           else
             grep -q "splashscreen_background" android/app/src/main/res/values/colors.xml || sed -i 's|</resources>|  <color name="splashscreen_background">#1E293B</color>\n</resources>|' android/app/src/main/res/values/colors.xml
           fi
-
           # 2. Night values (prevents dark mode AAPT crash)
           mkdir -p android/app/src/main/res/values-night
           if [ ! -f android/app/src/main/res/values-night/colors.xml ]; then
@@ -66,29 +65,23 @@ jobs:
           mkdir -p android/app/src/main/java/com/shikshasaathi/app/litertlm
           cat << 'EOF' > android/app/src/main/java/com/shikshasaathi/app/litertlm/LiteRTLMModule.kt
           package com.shikshasaathi.app.litertlm
-
           import android.app.ActivityManager
           import android.content.Context
           import android.os.StatFs
           import com.facebook.react.bridge.*
-
           class LiteRTLMModule(private val reactContext: ReactApplicationContext) :
               ReactContextBaseJavaModule(reactContext) {
-
               override fun getName(): String = "LiteRTLM"
-
               @ReactMethod
               fun checkDeviceEligibility(promise: Promise) {
                   try {
                       val actManager = reactContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
                       val memInfo = ActivityManager.MemoryInfo()
                       actManager.getMemoryInfo(memInfo)
-
                       val availRamMB = memInfo.availMem / (1024 * 1024)
                       val totalRamMB = memInfo.totalMem / (1024 * 1024)
                       val internalStat = StatFs(reactContext.filesDir.absolutePath)
                       val availStorageMB = (internalStat.availableBlocksLong * internalStat.blockSizeLong) / (1024 * 1024)
-
                       val result = Arguments.createMap().apply {
                           putDouble("availableRamMB", availRamMB.toDouble())
                           putDouble("totalRamMB", totalRamMB.toDouble())
@@ -101,12 +94,10 @@ jobs:
                       promise.reject("CHECK_ERROR", e.localizedMessage)
                   }
               }
-
               @ReactMethod
               fun initializeModel(modelFilePath: String, promise: Promise) {
                   promise.resolve(Arguments.createMap().apply { putBoolean("success", true) })
               }
-
               @ReactMethod
               fun generateTutorResponse(userPrompt: String, systemPrompt: String, promise: Promise) {
                   val result = Arguments.createMap().apply {
@@ -115,7 +106,6 @@ jobs:
                   }
                   promise.resolve(result)
               }
-
               @ReactMethod
               fun unloadModel(promise: Promise) {
                   System.gc()
@@ -123,15 +113,12 @@ jobs:
               }
           }
           EOF
-
           cat << 'EOF' > android/app/src/main/java/com/shikshasaathi/app/litertlm/LiteRTLMPackage.kt
           package com.shikshasaathi.app.litertlm
-
           import com.facebook.react.ReactPackage
           import com.facebook.react.bridge.NativeModule
           import com.facebook.react.bridge.ReactApplicationContext
           import com.facebook.react.uimanager.ViewManager
-
           class LiteRTLMPackage : ReactPackage {
               override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
                   return listOf(LiteRTLMModule(reactContext))
@@ -141,6 +128,19 @@ jobs:
               }
           }
           EOF
+
+      # -------------------------------------------------------------
+      # ⬇️ THE FIX: Bundle Offline JS & Assets (Fixes Red Screen Crash) ⬇️
+      # -------------------------------------------------------------
+      - name: Bundle JavaScript & Assets for Standalone APK
+        run: |
+          mkdir -p android/app/src/main/assets
+          npx react-native bundle \
+            --platform android \
+            --dev false \
+            --entry-file App.js \
+            --bundle-output android/app/src/main/assets/index.android.bundle \
+            --assets-dest android/app/src/main/res/
 
       - name: Grant Execute Permission to Gradle
         run: chmod +x android/gradlew
