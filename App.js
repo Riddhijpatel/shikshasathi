@@ -13,133 +13,191 @@ import {
   ActivityIndicator,
   NativeModules,
 } from 'react-native';
-import { registerRootComponent } from 'expo'; 
+import { registerRootComponent } from 'expo'; // Fixes "main has not been registered"
 
 const LiteRTLMNative = NativeModules.LiteRTLM;
 
 // -------------------------------------------------------------
-// CHAPTER CONFIGURATION (GSEB Standard 5 Aligned)
+// COMPLETE GSEB STANDARD 5 CHAPTER CONFIGURATION (ALL 3 SUBJECTS)
 // -------------------------------------------------------------
 const CHAPTERS = {
   mathematics: [
-    { id: 'math_ch1', name: 'Chapter 1: Shapes and Angles' },
-    { id: 'math_ch2', name: 'Chapter 2: Parts and Wholes (Fractions)' },
+    { id: 'math_ch1', name: 'Ch 1: Shapes and Angles' },
+    { id: 'math_ch2', name: 'Ch 2: Parts and Wholes (Fractions)' },
+    { id: 'math_ch3', name: 'Ch 3: How Many Squares (Area & Perimeter)' },
+    { id: 'math_ch4', name: 'Ch 4: Does it Look the Same (Symmetry)' },
+    { id: 'math_ch5', name: 'Ch 5: Be My Multiple, Ill be Your Factor' },
+    { id: 'math_ch6', name: 'Ch 6: Can You See the Pattern' },
+    { id: 'math_ch7', name: 'Ch 7: Mapping Your Way (Directions & Scale)' },
+    { id: 'math_ch8', name: 'Ch 8: Boxes and Sketches (3D Nets)' },
+    { id: 'math_ch9', name: 'Ch 9: Tenths and Hundredths (Decimals)' },
+    { id: 'math_ch10', name: 'Ch 10: Area and its Boundary' },
+    { id: 'math_ch11', name: 'Ch 11: Smart Charts (Data Handling)' },
+    { id: 'math_ch12', name: 'Ch 12: Ways to Multiply and Divide' },
+    { id: 'math_ch13', name: 'Ch 13: How Big? How Heavy? (Volume & Mass)' },
+    { id: 'math_ch14', name: 'Ch 14: The National Fruit - Mango (Word Problems)' },
   ],
   science: [
-    { id: 'sci_ch1', name: 'Chapter 1: Seeds and Seeds' },
-    { id: 'sci_ch2', name: 'Chapter 2: From Tasting to Digesting' },
+    { id: 'sci_ch1', name: 'Ch 1: Seeds and Seeds' },
+    { id: 'sci_ch2', name: 'Ch 2: From Tasting to Digesting' },
+    { id: 'sci_ch3', name: 'Ch 3: Super Senses (Animal Senses)' },
+    { id: 'sci_ch4', name: 'Ch 4: Experiments with Water (Density & Solutes)' },
+    { id: 'sci_ch5', name: 'Ch 5: Every Drop Counts (Water Conservation)' },
+    { id: 'sci_ch6', name: 'Ch 6: A Treat for Mosquitoes (Malaria & Health)' },
+    { id: 'sci_ch7', name: 'Ch 7: Up You Go! (Mountaineering & Mountains)' },
+    { id: 'sci_ch8', name: 'Ch 8: Walls Tell Stories (Historical Monuments)' },
+    { id: 'sci_ch9', name: 'Ch 9: Sunita in Space (Gravity & Atmosphere)' },
+    { id: 'sci_ch10', name: 'Ch 10: What If It Finishes (Petroleum & Fuels)' },
+    { id: 'sci_ch11', name: 'Ch 11: A Shelter So High (Ladakh Cold Desert)' },
+    { id: 'sci_ch12', name: 'Ch 12: When the Earth Shook (Earthquakes & Safety)' },
+    { id: 'sci_ch13', name: 'Ch 13: Blow Hot, Blow Cold (Temperature & Respiration)' },
+    { id: 'sci_ch14', name: 'Ch 14: A Seed Tells a Farmers Story (Agriculture)' },
   ],
   social_studies: [
-    { id: 'sst_ch1', name: 'Chapter 1: Gujarat: Geography & Resources' },
-    { id: 'sst_ch2', name: 'Chapter 2: Cultural Heritage & Stepwells' },
+    { id: 'sst_ch1', name: 'Ch 1: Gujarat: Geography & Natural Resources' },
+    { id: 'sst_ch2', name: 'Ch 2: Cultural Heritage & Stepwells (Vavs)' },
+    { id: 'sst_ch3', name: 'Ch 3: Ancient Seaports & Lothal Dockyard' },
+    { id: 'sst_ch4', name: 'Ch 4: Architectural Wonders & Sun Temple Modhera' },
+    { id: 'sst_ch5', name: 'Ch 5: Wildlife Sanctuaries & Asiatic Lions' },
+    { id: 'sst_ch6', name: 'Ch 6: Freedom Struggle & Sabarmati Ashram' },
+    { id: 'sst_ch7', name: 'Ch 7: Sardar Sarovar Dam & Irrigation Networks' },
   ],
 };
 
 // -------------------------------------------------------------
-// QUESTION BANK (90 Total Questions • 15 Per Chapter)
+// COMPREHENSIVE TEXTBOOK QUESTION BANK
 // -------------------------------------------------------------
 const QUESTION_BANK = [
-  // ================= MATHEMATICS - CH 1 (15 Qs) =================
-  { id: 'M1_01', chapterId: 'math_ch1', type: 'MCQ', prompt: '1. How many degrees are there in a right angle?', marks: 1, options: ['45 degrees', '90 degrees', '180 degrees', '360 degrees'], correctOptionIndex: 1, explanation: 'A right angle measures exactly 90 degrees.' },
-  { id: 'M1_02', chapterId: 'math_ch1', type: 'TRUE_FALSE', prompt: '2. At 9:00 o clock, the hands of a clock form an obtuse angle.', marks: 1, correctBoolean: false, explanation: 'At 9:00, the clock hands form a 90 degree right angle, not an obtuse angle.' },
-  { id: 'M1_03', chapterId: 'math_ch1', type: 'MATCHING', prompt: '3. Match each angle type with its degree range:', marks: 2, matchingPairs: [{ left: 'Less than 90 deg', right: 'Acute' }, { left: 'Between 90 and 180 deg', right: 'Obtuse' }], explanation: 'Acute is <90 deg; Obtuse is between 90 and 180 deg.' },
-  { id: 'M1_04', chapterId: 'math_ch1', type: 'FILL_BLANKS', prompt: '4. An angle that forms a straight flat line measures exactly _______ degrees.', marks: 1, acceptedBlanks: ['180', '180 degrees'], explanation: 'A straight angle measures exactly 180 degrees.' },
-  { id: 'M1_05', chapterId: 'math_ch1', type: 'MCQ', prompt: '5. What type of angle is smaller than a right angle?', marks: 1, options: ['Obtuse angle', 'Acute angle', 'Straight angle', 'Reflex angle'], correctOptionIndex: 1, explanation: 'An angle measuring less than 90 degrees is an acute angle.' },
-  { id: 'M1_06', chapterId: 'math_ch1', type: 'SHORT_ANSWER', prompt: '6. Define a right angle in your own words.', marks: 2, rubricKeywords: ['90', 'degree', 'degrees', 'perpendicular', 'square', 'corner'], explanation: 'A right angle measures exactly 90 degrees and forms a square corner.' },
-  { id: 'M1_07', chapterId: 'math_ch1', type: 'MCQ', prompt: '7. How many corners (vertices) does a triangle have?', marks: 1, options: ['2', '3', '4', '5'], correctOptionIndex: 1, explanation: 'A triangle has 3 sides and 3 corners.' },
-  { id: 'M1_08', chapterId: 'math_ch1', type: 'TRUE_FALSE', prompt: '8. Every rectangle contains four right angles.', marks: 1, correctBoolean: true, explanation: 'All four internal angles of a rectangle are 90 degrees.' },
-  { id: 'M1_09', chapterId: 'math_ch1', type: 'FILL_BLANKS', prompt: '9. An angle greater than 90 degrees but less than 180 degrees is called an _______ angle.', marks: 1, acceptedBlanks: ['obtuse', 'obtuse angle'], explanation: 'Obtuse angles measure between 90 and 180 degrees.' },
-  { id: 'M1_10', chapterId: 'math_ch1', type: 'MCQ', prompt: '10. At 6:00 o clock, what kind of angle do the clock hands form?', marks: 1, options: ['Acute angle', 'Right angle', 'Straight angle', 'Zero angle'], correctOptionIndex: 2, explanation: 'At 6:00, hands point in opposite directions making a 180 deg straight angle.' },
-  { id: 'M1_11', chapterId: 'math_ch1', type: 'MATCHING', prompt: '11. Match each shape with its number of angles:', marks: 2, matchingPairs: [{ left: 'Triangle', right: '3 angles' }, { left: 'Pentagon', right: '5 angles' }], explanation: 'Triangle has 3 angles; pentagon has 5 angles.' },
-  { id: 'M1_12', chapterId: 'math_ch1', type: 'TRUE_FALSE', prompt: '12. Two right angles combined together form a straight angle.', marks: 1, correctBoolean: true, explanation: '90 deg + 90 deg = 180 deg (straight angle).' },
-  { id: 'M1_13', chapterId: 'math_ch1', type: 'SHORT_ANSWER', prompt: '13. What geometric tool in a compass box measures angles in degrees?', marks: 2, rubricKeywords: ['protractor', 'd scale'], explanation: 'A protractor measures angles in degrees.' },
-  { id: 'M1_14', chapterId: 'math_ch1', type: 'FILL_BLANKS', prompt: '14. The common end point where two arms meet to form an angle is the _______.', marks: 1, acceptedBlanks: ['vertex', 'corner'], explanation: 'The vertex is the intersection point of two angle rays.' },
-  { id: 'M1_15', chapterId: 'math_ch1', type: 'MCQ', prompt: '15. How many right angles are there in a standard square?', marks: 1, options: ['1', '2', '3', '4'], correctOptionIndex: 3, explanation: 'A square has 4 right angles.' },
+  // ================= MATHEMATICS =================
+  // Ch 1: Shapes and Angles
+  { id: 'M1_01', chapterId: 'math_ch1', concept: 'Right Angles', type: 'MCQ', prompt: '1. How many degrees are there in a right angle?', marks: 1, options: ['45 degrees', '90 degrees', '180 degrees', '360 degrees'], correctOptionIndex: 1, explanation: 'A right angle measures exactly 90 degrees.' },
+  { id: 'M1_02', chapterId: 'math_ch1', concept: 'Clock Angles', type: 'TRUE_FALSE', prompt: '2. At 9:00 o clock, the hands of a clock form an obtuse angle.', marks: 1, correctBoolean: false, explanation: 'At 9:00, clock hands form a 90 degree right angle.' },
+  { id: 'M1_03', chapterId: 'math_ch1', concept: 'Acute vs Obtuse', type: 'MATCHING', prompt: '3. Match each angle type with its degree range:', marks: 2, matchingPairs: [{ left: 'Less than 90 deg', right: 'Acute' }, { left: 'Between 90 and 180 deg', right: 'Obtuse' }], explanation: 'Acute is <90 deg; Obtuse is between 90 and 180 deg.' },
+  { id: 'M1_04', chapterId: 'math_ch1', concept: 'Straight Angles', type: 'FILL_BLANKS', prompt: '4. An angle that forms a straight line measures exactly _______ degrees.', marks: 1, acceptedBlanks: ['180', '180 degrees'], explanation: 'A straight angle measures exactly 180 degrees.' },
+  { id: 'M1_05', chapterId: 'math_ch1', concept: 'Polygons', type: 'SHORT_ANSWER', prompt: '5. Name the geometric instrument used to measure angles in degrees.', marks: 2, rubricKeywords: ['protractor', 'd scale'], explanation: 'A protractor measures angles in degrees.' },
 
-  // ================= MATHEMATICS - CH 2 (15 Qs) =================
-  { id: 'M2_01', chapterId: 'math_ch2', type: 'MCQ', prompt: '1. What is 1/2 of 100 rupees?', marks: 1, options: ['25 rupees', '50 rupees', '75 rupees', '10 rupees'], correctOptionIndex: 1, explanation: 'Half of 100 is 50 rupees.' },
-  { id: 'M2_02', chapterId: 'math_ch2', type: 'TRUE_FALSE', prompt: '2. The fraction 2/4 is equal to 1/2.', marks: 1, correctBoolean: true, explanation: '2/4 simplifies to 1/2.' },
-  { id: 'M2_03', chapterId: 'math_ch2', type: 'MATCHING', prompt: '3. Match each fraction word with its number value:', marks: 2, matchingPairs: [{ left: 'One Half', right: '1/2' }, { left: 'One Quarter', right: '1/4' }], explanation: 'One half = 1/2; One quarter = 1/4.' },
-  { id: 'M2_04', chapterId: 'math_ch2', type: 'FILL_BLANKS', prompt: '4. In the fraction 3/5, the bottom number 5 is called the _______.', marks: 1, acceptedBlanks: ['denominator'], explanation: 'The bottom number of a fraction is the denominator.' },
-  { id: 'M2_05', chapterId: 'math_ch2', type: 'MCQ', prompt: '5. How many one-fourth (1/4) parts make one whole?', marks: 1, options: ['2', '3', '4', '8'], correctOptionIndex: 2, explanation: 'Four 1/4 parts equal 1 whole.' },
-  { id: 'M2_06', chapterId: 'math_ch2', type: 'SHORT_ANSWER', prompt: '6. In a fraction, what does the numerator represent?', marks: 2, rubricKeywords: ['top', 'parts', 'taken', 'selected', 'considered'], explanation: 'The numerator shows how many equal parts are selected.' },
-  { id: 'M2_07', chapterId: 'math_ch2', type: 'MCQ', prompt: '7. Which fraction is larger: 1/3 or 1/6?', marks: 1, options: ['1/3', '1/6', 'Both are equal', 'Cannot tell'], correctOptionIndex: 0, explanation: '1/3 is larger than 1/6.' },
-  { id: 'M2_08', chapterId: 'math_ch2', type: 'TRUE_FALSE', prompt: '8. If you have 4 parts out of 4, you have 1 whole.', marks: 1, correctBoolean: true, explanation: '4/4 = 1 whole.' },
-  { id: 'M2_09', chapterId: 'math_ch2', type: 'FILL_BLANKS', prompt: '9. Half of an hour (60 minutes) equals _______ minutes.', marks: 1, acceptedBlanks: ['30', '30 minutes'], explanation: '1/2 of 60 minutes = 30 minutes.' },
-  { id: 'M2_10', chapterId: 'math_ch2', type: 'MCQ', prompt: '10. If a pizza is cut into 8 equal slices and you eat 2, what fraction did you eat?', marks: 1, options: ['1/8', '2/8', '4/8', '6/8'], correctOptionIndex: 1, explanation: '2 slices out of 8 is 2/8 (or 1/4).' },
-  { id: 'M2_11', chapterId: 'math_ch2', type: 'MATCHING', prompt: '11. Match each fraction to its equivalent fraction:', marks: 2, matchingPairs: [{ left: '1/2', right: '3/6' }, { left: '3/4', right: '6/8' }], explanation: '1/2 = 3/6 and 3/4 = 6/8.' },
-  { id: 'M2_12', chapterId: 'math_ch2', type: 'TRUE_FALSE', prompt: '12. In a proper fraction, the numerator is always greater than the denominator.', marks: 1, correctBoolean: false, explanation: 'In a proper fraction, the numerator is smaller.' },
-  { id: 'M2_13', chapterId: 'math_ch2', type: 'SHORT_ANSWER', prompt: '13. How do you calculate one-third of 15 candies?', marks: 2, rubricKeywords: ['divide', '15', '3', '5', 'five'], explanation: 'Divide 15 by 3 to get 5 candies.' },
-  { id: 'M2_14', chapterId: 'math_ch2', type: 'FILL_BLANKS', prompt: '14. Fractions that have the exact same denominator are called _______ fractions.', marks: 1, acceptedBlanks: ['like', 'like fractions'], explanation: 'Fractions with identical denominators are like fractions.' },
-  { id: 'M2_15', chapterId: 'math_ch2', type: 'MCQ', prompt: '15. What is 2/10 in its simplest reduced form?', marks: 1, options: ['1/5', '1/10', '2/5', '1/2'], correctOptionIndex: 0, explanation: '2/10 simplifies to 1/5.' },
+  // Ch 2: Parts and Wholes
+  { id: 'M2_01', chapterId: 'math_ch2', concept: 'Fraction Values', type: 'MCQ', prompt: '1. What is 1/2 of 100 rupees?', marks: 1, options: ['25 rupees', '50 rupees', '75 rupees', '10 rupees'], correctOptionIndex: 1, explanation: 'Half of 100 is 50 rupees.' },
+  { id: 'M2_02', chapterId: 'math_ch2', concept: 'Equivalent Fractions', type: 'TRUE_FALSE', prompt: '2. The fraction 2/4 is equal to 1/2.', marks: 1, correctBoolean: true, explanation: '2/4 simplifies to 1/2.' },
+  { id: 'M2_03', chapterId: 'math_ch2', concept: 'Denominator', type: 'FILL_BLANKS', prompt: '3. In the fraction 3/5, the bottom number 5 is called the _______.', marks: 1, acceptedBlanks: ['denominator'], explanation: 'The bottom number is the denominator.' },
+  { id: 'M2_04', chapterId: 'math_ch2', concept: 'Comparing Fractions', type: 'MCQ', prompt: '4. Which fraction is larger: 1/3 or 1/6?', marks: 1, options: ['1/3', '1/6', 'Both are equal', 'Cannot tell'], correctOptionIndex: 0, explanation: '1/3 is larger than 1/6.' },
+  { id: 'M2_05', chapterId: 'math_ch2', concept: 'Real-world Fractions', type: 'SHORT_ANSWER', prompt: '5. How many minutes are there in 3/4 of an hour?', marks: 2, rubricKeywords: ['45', 'forty five'], explanation: '3/4 of 60 minutes = 45 minutes.' },
 
-  // ================= SCIENCE - CH 1 (15 Qs) =================
-  { id: 'S1_01', chapterId: 'sci_ch1', type: 'FILL_BLANKS', prompt: '1. The sprouting of a seed into a new young plant is called _______.', marks: 1, acceptedBlanks: ['germination', 'seed germination'], explanation: 'Germination is when a seed embryo awakens and begins to sprout.' },
-  { id: 'S1_02', chapterId: 'sci_ch1', type: 'SHORT_ANSWER', prompt: '2. Name two natural carriers or agents of seed dispersal.', marks: 2, rubricKeywords: ['wind', 'water', 'animal', 'animals', 'bird', 'birds', 'air'], explanation: 'Seeds are dispersed by abiotic (wind, water) and biotic (animals) agents.' },
-  { id: 'S1_03', chapterId: 'sci_ch1', type: 'MCQ', prompt: '3. Light seeds with hair or wings (like dandelion) are dispersed by:', marks: 1, options: ['Water', 'Wind', 'Animals', 'Gravity only'], correctOptionIndex: 1, explanation: 'Light and feathery seeds float on wind currents.' },
-  { id: 'S1_04', chapterId: 'sci_ch1', type: 'TRUE_FALSE', prompt: '4. Seeds require moisture, air, and proper warmth to germinate.', marks: 1, correctBoolean: true, explanation: 'Water, oxygen, and warmth are essential for germination.' },
-  { id: 'S1_05', chapterId: 'sci_ch1', type: 'MATCHING', prompt: '5. Match each seed with its primary dispersal method:', marks: 2, matchingPairs: [{ left: 'Dandelion seed', right: 'Wind' }, { left: 'Coconut seed', right: 'Water' }], explanation: 'Dandelion uses wind; coconut uses water.' },
-  { id: 'S1_06', chapterId: 'sci_ch1', type: 'MCQ', prompt: '6. Which part inside a seed stores food for the growing baby plant embryo?', marks: 1, options: ['Seed coat', 'Cotyledons', 'Stem', 'Flower'], correctOptionIndex: 1, explanation: 'Cotyledons store starch and food for initial growth.' },
-  { id: 'S1_07', chapterId: 'sci_ch1', type: 'FILL_BLANKS', prompt: '7. Plants like the Pitcher Plant that trap and digest insects are called _______ plants.', marks: 1, acceptedBlanks: ['insectivorous', 'carnivorous'], explanation: 'Insectivorous plants trap insects to obtain essential nitrogen.' },
-  { id: 'S1_08', chapterId: 'sci_ch1', type: 'TRUE_FALSE', prompt: '8. All plant seeds are of the same size, shape, and surface texture.', marks: 1, correctBoolean: false, explanation: 'Seeds vary widely in size, color, shape, and texture.' },
-  { id: 'S1_09', chapterId: 'sci_ch1', type: 'SHORT_ANSWER', prompt: '9. What feature of burr seeds inspired George de Mestral to invent Velcro?', marks: 2, rubricKeywords: ['hooks', 'hook', 'stick', 'sticking', 'fur', 'clothes', 'loops'], explanation: 'Tiny hooks on burrs clung to fur and clothing, inspiring Velcro.' },
-  { id: 'S1_10', chapterId: 'sci_ch1', type: 'MCQ', prompt: '10. Which kitchen spice seed crackles and pops when added to hot oil?', marks: 1, options: ['Mustard', 'Gram', 'Pea', 'Wheat'], correctOptionIndex: 0, explanation: 'Mustard seeds crackle and pop when heated in oil.' },
-  { id: 'S1_11', chapterId: 'sci_ch1', type: 'FILL_BLANKS', prompt: '11. A seed that splits easily into two equal halves is called a _______ seed.', marks: 1, acceptedBlanks: ['dicot', 'dicotyledon'], explanation: 'Seeds with two cotyledons are dicots.' },
-  { id: 'S1_12', chapterId: 'sci_ch1', type: 'MATCHING', prompt: '12. Match each plant seed with its dispersal adaptation:', marks: 2, matchingPairs: [{ left: 'Xanthium seed', right: 'Tiny hooks' }, { left: 'Pea pod', right: 'Explosive bursting' }], explanation: 'Xanthium has hooks; dry pea pods burst open.' },
-  { id: 'S1_13', chapterId: 'sci_ch1', type: 'TRUE_FALSE', prompt: '13. Dry gram seeds will sprout inside an airtight dry jar without any water.', marks: 1, correctBoolean: false, explanation: 'Seeds need water to soften their coat and start germination.' },
-  { id: 'S1_14', chapterId: 'sci_ch1', type: 'MCQ', prompt: '14. Green chillies were brought to India from which part of the world by traders?', marks: 1, options: ['South America', 'Europe', 'Australia', 'Africa'], correctOptionIndex: 0, explanation: 'Chillies were brought from South America to India.' },
-  { id: 'S1_15', chapterId: 'sci_ch1', type: 'SHORT_ANSWER', prompt: '15. Why is it important for seeds to disperse far away from their mother plant?', marks: 2, rubricKeywords: ['overcrowding', 'sunlight', 'water', 'space', 'compete', 'competition', 'grow'], explanation: 'Dispersal prevents overcrowding and competition for sunlight and water.' },
+  // Ch 3: How Many Squares
+  { id: 'M3_01', chapterId: 'math_ch3', concept: 'Perimeter', type: 'MCQ', prompt: '1. The total length of the boundary of a closed shape is called its:', marks: 1, options: ['Area', 'Perimeter', 'Volume', 'Radius'], correctOptionIndex: 1, explanation: 'Perimeter is the total boundary length.' },
+  { id: 'M3_02', chapterId: 'math_ch3', concept: 'Area Calculation', type: 'FILL_BLANKS', prompt: '2. The area of a rectangle with length 6 cm and width 4 cm is _______ sq cm.', marks: 1, acceptedBlanks: ['24', '24 sq cm'], explanation: 'Area = length × width = 6 × 4 = 24 sq cm.' },
+  { id: 'M3_03', chapterId: 'math_ch3', concept: 'Square Grid', type: 'TRUE_FALSE', prompt: '3. A square of side 1 cm has an area of 1 sq cm.', marks: 1, correctBoolean: true, explanation: '1 cm × 1 cm = 1 sq cm.' },
 
-  // ================= SCIENCE - CH 2 (15 Qs) =================
-  { id: 'S2_01', chapterId: 'sci_ch2', type: 'MCQ', prompt: '1. Which fluid secreted in our mouth begins the breakdown of food starch?', marks: 1, options: ['Bile', 'Saliva', 'Water', 'Acid'], correctOptionIndex: 1, explanation: 'Saliva contains enzymes that begin carbohydrate breakdown.' },
-  { id: 'S2_02', chapterId: 'sci_ch2', type: 'TRUE_FALSE', prompt: '2. The human stomach churns and mixes food with acidic digestive juices.', marks: 1, correctBoolean: true, explanation: 'Stomach walls churn food and mix it with digestive acids.' },
-  { id: 'S2_03', chapterId: 'sci_ch2', type: 'MATCHING', prompt: '3. Match each food item with its primary taste:', marks: 2, matchingPairs: [{ left: 'Jaggery', right: 'Sweet' }, { left: 'Bitter gourd (Karela)', right: 'Bitter' }], explanation: 'Jaggery is sweet; Karela is bitter.' },
-  { id: 'S2_04', chapterId: 'sci_ch2', type: 'FILL_BLANKS', prompt: '4. The digestive juice inside the human stomach contains _______ acid.', marks: 1, acceptedBlanks: ['hydrochloric', 'hydrochloric acid', 'acid'], explanation: 'Hydrochloric acid kills microbes and activates enzymes.' },
-  { id: 'S2_05', chapterId: 'sci_ch2', type: 'MCQ', prompt: '5. What sensory structures on the tongue allow us to recognize different tastes?', marks: 1, options: ['Taste buds', 'Saliva glands', 'Teeth enamel', 'Pores'], correctOptionIndex: 0, explanation: 'Taste buds detect sweet, salty, sour, and bitter tastes.' },
-  { id: 'S2_06', chapterId: 'sci_ch2', type: 'SHORT_ANSWER', prompt: '6. Why does a piece of plain bread start tasting sweeter after being chewed for a long time?', marks: 2, rubricKeywords: ['saliva', 'sugar', 'glucose', 'starch', 'break', 'breaks', 'sweet'], explanation: 'Saliva breaks starch into sweet simple sugars.' },
-  { id: 'S2_07', chapterId: 'sci_ch2', type: 'MCQ', prompt: '7. A patient suffering from severe dehydration and vomiting is given a drip of:', marks: 1, options: ['Glucose', 'Milk', 'Fruit juice', 'Cold water'], correctOptionIndex: 0, explanation: 'A glucose drip gives instant energy and hydration directly into the bloodstream.' },
-  { id: 'S2_08', chapterId: 'sci_ch2', type: 'TRUE_FALSE', prompt: '8. Digestion of food begins in the stomach, not in the mouth.', marks: 1, correctBoolean: false, explanation: 'Digestion begins right in the mouth with saliva.' },
-  { id: 'S2_09', chapterId: 'sci_ch2', type: 'FILL_BLANKS', prompt: '9. The muscular food pipe connecting the throat to the stomach is the _______.', marks: 1, acceptedBlanks: ['oesophagus', 'esophagus', 'food pipe'], explanation: 'The oesophagus carries swallowed food to the stomach.' },
-  { id: 'S2_10', chapterId: 'sci_ch2', type: 'MCQ', prompt: '10. Which doctor famously studied the human stomach through a hole in patient Martin?', marks: 1, options: ['Dr. Beaumont', 'Dr. Fleming', 'Dr. Jenner', 'Dr. Watson'], correctOptionIndex: 0, explanation: 'Dr. William Beaumont discovered stomach digestion secrets through Martin.' },
-  { id: 'S2_11', chapterId: 'sci_ch2', type: 'MATCHING', prompt: '11. Match each food item with its taste:', marks: 2, matchingPairs: [{ left: 'Lemon juice', right: 'Sour' }, { left: 'Table salt', right: 'Salty' }], explanation: 'Lemon is sour; table salt is salty.' },
-  { id: 'S2_12', chapterId: 'sci_ch2', type: 'TRUE_FALSE', prompt: '12. Chewing food thoroughly makes it easier for our body to digest.', marks: 1, correctBoolean: true, explanation: 'Chewing breaks food into small particles mixed with enzymes.' },
-  { id: 'S2_13', chapterId: 'sci_ch2', type: 'SHORT_ANSWER', prompt: '13. What is the full form of ORS, commonly given during diarrhea or vomiting?', marks: 2, rubricKeywords: ['oral', 'rehydration', 'solution'], explanation: 'ORS stands for Oral Rehydration Solution.' },
-  { id: 'S2_14', chapterId: 'sci_ch2', type: 'FILL_BLANKS', prompt: '14. When our stomach is empty for a long time, acid causes a burning sensation called _______.', marks: 1, acceptedBlanks: ['acidity', 'heartburn'], explanation: 'Excess stomach acid without food creates acidity.' },
-  { id: 'S2_15', chapterId: 'sci_ch2', type: 'MCQ', prompt: '15. What is the approximate internal temperature of a healthy human stomach?', marks: 1, options: ['15 deg C', '30 deg C', '50 deg C', '100 deg C'], correctOptionIndex: 1, explanation: 'The internal stomach temperature is approximately 30 degrees Celsius.' },
+  // Ch 4: Symmetry
+  { id: 'M4_01', chapterId: 'math_ch4', concept: 'Mirror Halves', type: 'TRUE_FALSE', prompt: '1. The letter H has both vertical and horizontal lines of symmetry.', marks: 1, correctBoolean: true, explanation: 'Letter H can be split evenly both vertically and horizontally.' },
+  { id: 'M4_02', chapterId: 'math_ch4', concept: 'Rotations', type: 'MCQ', prompt: '2. After a half turn (180 deg rotation), which digit looks identical?', marks: 1, options: ['0 and 8', '3 and 5', '2 and 7', '4 and 6'], correctOptionIndex: 0, explanation: 'Digits 0 and 8 remain the same after a half-turn.' },
 
-  // ================= SOCIAL STUDIES - CH 1 (15 Qs) =================
-  { id: 'SS1_01', chapterId: 'sst_ch1', type: 'MCQ', prompt: '1. Gujarat has the longest coastline in India. What is its approximate length?', marks: 1, options: ['1,000 km', '1,214 km', '1,600 km', '2,400 km'], correctOptionIndex: 2, explanation: 'Gujarat has a shoreline spanning roughly 1,600 km.' },
-  { id: 'SS1_02', chapterId: 'sst_ch1', type: 'FILL_BLANKS', prompt: '2. The famous White Salt Desert is situated in the Great Rann of _______.', marks: 1, acceptedBlanks: ['kutch', 'kachchh'], explanation: 'The White Desert is located in the northern Kutch district.' },
-  { id: 'SS1_03', chapterId: 'sst_ch1', type: 'SHORT_ANSWER', prompt: '3. Name the two natural gulfs bordering the coast of Gujarat.', marks: 2, rubricKeywords: ['kutch', 'kachchh', 'khambhat', 'cambay'], explanation: 'The two major gulfs are the Gulf of Kutch and Gulf of Khambhat.' },
-  { id: 'SS1_04', chapterId: 'sst_ch1', type: 'TRUE_FALSE', prompt: '4. Gir Forest in Gujarat is the only natural home in the world for Asiatic Lions.', marks: 1, correctBoolean: true, explanation: 'Gir National Park is the sole surviving wild habitat for Asiatic Lions.' },
-  { id: 'SS1_05', chapterId: 'sst_ch1', type: 'MCQ', prompt: '5. Which is the longest and largest river flowing through Gujarat?', marks: 1, options: ['Sabarmati', 'Tapi', 'Narmada', 'Mahi'], correctOptionIndex: 2, explanation: 'Narmada is the largest river, revered as the lifeline of Gujarat.' },
-  { id: 'SS1_06', chapterId: 'sst_ch1', type: 'MATCHING', prompt: '6. Match each industrial center with its identity:', marks: 2, matchingPairs: [{ left: 'Kandla', right: 'Major Port' }, { left: 'Alang', right: 'Ship Breaking' }], explanation: 'Kandla is a major cargo port; Alang is known for ship recycling.' },
-  { id: 'SS1_07', chapterId: 'sst_ch1', type: 'FILL_BLANKS', prompt: '7. The capital administrative city of Gujarat state is _______.', marks: 1, acceptedBlanks: ['gandhinagar'], explanation: 'Gandhinagar is the planned administrative capital of Gujarat.' },
-  { id: 'SS1_08', chapterId: 'sst_ch1', type: 'TRUE_FALSE', prompt: '8. The Tropic of Cancer passes directly through the state of Gujarat.', marks: 1, correctBoolean: true, explanation: 'The Tropic of Cancer (23.5 deg N) runs across northern Gujarat.' },
-  { id: 'SS1_09', chapterId: 'sst_ch1', type: 'MCQ', prompt: '9. The gigantic multipurpose dam built across the Narmada River is named:', marks: 1, options: ['Sardar Sarovar Dam', 'Ukai Dam', 'Dharoi Dam', 'Kadana Dam'], correctOptionIndex: 0, explanation: 'The Sardar Sarovar Dam provides irrigation and drinking water.' },
-  { id: 'SS1_10', chapterId: 'sst_ch1', type: 'SHORT_ANSWER', prompt: '10. Name two major cash crops widely grown in the fertile soils of Gujarat.', marks: 2, rubricKeywords: ['cotton', 'groundnut', 'tobacco', 'cumin', 'mustard', 'sesame'], explanation: 'Gujarat is a leading producer of cotton and groundnut in India.' },
-  { id: 'SS1_11', chapterId: 'sst_ch1', type: 'MATCHING', prompt: '11. Match each place with its geographic feature:', marks: 2, matchingPairs: [{ left: 'Saputara', right: 'Hill Station' }, { left: 'Velavadar', right: 'Blackbuck Sanctuary' }], explanation: 'Saputara is Gujarat only hill station; Velavadar is known for blackbucks.' },
-  { id: 'SS1_12', chapterId: 'sst_ch1', type: 'TRUE_FALSE', prompt: '12. The Narmada and Tapi rivers flow westward into the Arabian Sea.', marks: 1, correctBoolean: true, explanation: 'Both Narmada and Tapi flow west and empty into the Arabian Sea.' },
-  { id: 'SS1_13', chapterId: 'sst_ch1', type: 'FILL_BLANKS', prompt: '13. Ankleshwar in Bharuch district is well known for the production of mineral oil and _______.', marks: 1, acceptedBlanks: ['petroleum', 'natural gas', 'gas'], explanation: 'Ankleshwar is a major oil and natural gas field in Gujarat.' },
-  { id: 'SS1_14', chapterId: 'sst_ch1', type: 'MCQ', prompt: '14. Which sea borders the entire western and southern coastline of Gujarat?', marks: 1, options: ['Arabian Sea', 'Bay of Bengal', 'Red Sea', 'Indian Ocean'], correctOptionIndex: 0, explanation: 'Gujarat borders the Arabian Sea to the west.' },
-  { id: 'SS1_15', chapterId: 'sst_ch1', type: 'SHORT_ANSWER', prompt: '15. Why is Gujarat long coastline advantageous for international trade?', marks: 2, rubricKeywords: ['ports', 'port', 'ships', 'shipping', 'trade', 'sea', 'export', 'import'], explanation: 'The coastline provides natural deep-water harbours for merchant shipping.' },
+  // Ch 5: Factors & Multiples
+  { id: 'M5_01', chapterId: 'math_ch5', concept: 'Common Multiples', type: 'MCQ', prompt: '1. What is the smallest common multiple (LCM) of 3 and 5?', marks: 1, options: ['8', '10', '15', '20'], correctOptionIndex: 2, explanation: '15 is the smallest common multiple of 3 and 5.' },
+  { id: 'M5_02', chapterId: 'math_ch5', concept: 'Factors', type: 'FILL_BLANKS', prompt: '2. The number 1 is a factor of _______ numbers.', marks: 1, acceptedBlanks: ['every', 'all', 'any'], explanation: '1 divides every whole number.' },
 
-  // ================= SOCIAL STUDIES - CH 2 (15 Qs) =================
-  { id: 'SS2_01', chapterId: 'sst_ch2', type: 'MCQ', prompt: '1. The famous Rani ki Vav stepwell is located in which historic city of Gujarat?', marks: 1, options: ['Patan', 'Surat', 'Rajkot', 'Junagadh'], correctOptionIndex: 0, explanation: 'Rani ki Vav is a grand 11th-century stepwell in Patan.' },
-  { id: 'SS2_02', chapterId: 'sst_ch2', type: 'FILL_BLANKS', prompt: '2. In Gujarat, traditional architectural stepwells are locally called _______.', marks: 1, acceptedBlanks: ['vav'], explanation: 'Subterranean stepped wells are known as Vav in Gujarat.' },
-  { id: 'SS2_03', chapterId: 'sst_ch2', type: 'SHORT_ANSWER', prompt: '3. Why were stepwells (vavs) built throughout Gujarat in ancient times?', marks: 2, rubricKeywords: ['water', 'storage', 'drought', 'travelers', 'rest', 'drinking'], explanation: 'Stepwells stored rainwater and provided rest for travelers.' },
-  { id: 'SS2_04', chapterId: 'sst_ch2', type: 'TRUE_FALSE', prompt: '4. Lothal in Gujarat was an ancient Harappan port with a brick tidal dockyard.', marks: 1, correctBoolean: true, explanation: 'Lothal is famous as an ancient Indus Valley Civilization seaport.' },
-  { id: 'SS2_05', chapterId: 'sst_ch2', type: 'MCQ', prompt: '5. The renowned ancient Sun Temple of Gujarat is situated at:', marks: 1, options: ['Modhera', 'Somnath', 'Dwarka', 'Ambaji'], correctOptionIndex: 0, explanation: 'The Sun Temple is located in Modhera in Mehsana district.' },
-  { id: 'SS2_06', chapterId: 'sst_ch2', type: 'MATCHING', prompt: '6. Match each historical site with its associated significance:', marks: 2, matchingPairs: [{ left: 'Sabarmati Ashram', right: 'Mahatma Gandhi' }, { left: 'Lothal', right: 'Ancient Dockyard' }], explanation: 'Sabarmati was home to Gandhiji; Lothal had a Harappan dockyard.' },
-  { id: 'SS2_07', chapterId: 'sst_ch2', type: 'FILL_BLANKS', prompt: '7. The vibrant folk dance performed during the Navratri festival in Gujarat is _______.', marks: 1, acceptedBlanks: ['garba', 'garba dance'], explanation: 'Garba is the world-renowned traditional dance of Gujarat.' },
-  { id: 'SS2_08', chapterId: 'sst_ch2', type: 'TRUE_FALSE', prompt: '8. Rani ki Vav is recognized worldwide as a UNESCO World Heritage Site.', marks: 1, correctBoolean: true, explanation: 'Rani ki Vav was inscribed as a UNESCO World Heritage Site in 2014.' },
-  { id: 'SS2_09', chapterId: 'sst_ch2', type: 'MCQ', prompt: '9. The Statue of Unity on the Narmada River honors which great national leader?', marks: 1, options: ['Sardar Vallabhbhai Patel', 'Mahatma Gandhi', 'Subhash Chandra Bose', 'Jawaharlal Nehru'], correctOptionIndex: 0, explanation: 'The Statue of Unity honors Sardar Vallabhbhai Patel.' },
-  { id: 'SS2_10', chapterId: 'sst_ch2', type: 'SHORT_ANSWER', prompt: '10. Name two famous traditional textile handicrafts of Gujarat.', marks: 2, rubricKeywords: ['bandhani', 'patola', 'embroidery', 'khadi', 'ajrakh', 'block print'], explanation: 'Famous Gujarati textiles include Bandhani tie-dye and Patan Patola.' },
-  { id: 'SS2_11', chapterId: 'sst_ch2', type: 'MATCHING', prompt: '11. Match each festival with its cultural activity in Gujarat:', marks: 2, matchingPairs: [{ left: 'Uttarayan', right: 'Kite Flying' }, { left: 'Navratri', right: 'Garba & Dandiya' }], explanation: 'Uttarayan is celebrated with kite flying; Navratri with Garba.' },
-  { id: 'SS2_12', chapterId: 'sst_ch2', type: 'TRUE_FALSE', prompt: '12. In the Modhera Sun Temple, morning sun rays shone directly on the golden sun deity.', marks: 1, correctBoolean: true, explanation: 'The temple was engineered so solar equinox rays lit up the sanctum.' },
-  { id: 'SS2_13', chapterId: 'sst_ch2', type: 'FILL_BLANKS', prompt: '13. The double-ikat woven silk sarees crafted by master weavers in Patan are called _______.', marks: 1, acceptedBlanks: ['patola', 'patan patola'], explanation: 'Patan Patola is an intricate double-ikat silk weaving heritage.' },
-  { id: 'SS2_14', chapterId: 'sst_ch2', type: 'MCQ', prompt: '14. The Adalaj Stepwell (Vav) is situated near which twin cities?', marks: 1, options: ['Ahmedabad and Gandhinagar', 'Surat and Navsari', 'Rajkot and Jamnagar', 'Vadodara and Anand'], correctOptionIndex: 0, explanation: 'Adalaj Vav is located between Ahmedabad and Gandhinagar.' },
-  { id: 'SS2_15', chapterId: 'sst_ch2', type: 'SHORT_ANSWER', prompt: '15. Who established the Sabarmati Ashram on the banks of the Sabarmati river in 1917?', marks: 2, rubricKeywords: ['gandhi', 'gandhiji', 'mahatma'], explanation: 'Mahatma Gandhi established the Sabarmati Ashram to guide India freedom movement.' },
+  // Ch 6: Patterns
+  { id: 'M6_01', chapterId: 'math_ch6', concept: 'Number Patterns', type: 'FILL_BLANKS', prompt: '1. What comes next in the sequence: 2, 4, 8, 16, _______?', marks: 1, acceptedBlanks: ['32'], explanation: 'Each number doubles: 16 × 2 = 32.' },
+
+  // Ch 7: Mapping Your Way
+  { id: 'M7_01', chapterId: 'math_ch7', concept: 'Scale Maps', type: 'MCQ', prompt: '1. On a scale where 1 cm = 10 km on ground, a 5 cm map distance equals:', marks: 1, options: ['25 km', '50 km', '100 km', '5 km'], correctOptionIndex: 1, explanation: '5 cm × 10 km = 50 km.' },
+
+  // Ch 8: Boxes & Sketches
+  { id: 'M8_01', chapterId: 'math_ch8', concept: '3D Shapes', type: 'MCQ', prompt: '1. How many square faces does a standard cube have?', marks: 1, options: ['4', '6', '8', '12'], correctOptionIndex: 1, explanation: 'A cube has 6 flat square faces.' },
+
+  // Ch 9: Decimals
+  { id: 'M9_01', chapterId: 'math_ch9', concept: 'Centimeters & Millimeters', type: 'FILL_BLANKS', prompt: '1. One centimeter equals _______ millimeters.', marks: 1, acceptedBlanks: ['10', '10 mm'], explanation: '1 cm = 10 mm.' },
+
+  // Ch 10: Area & Boundary
+  { id: 'M10_01', chapterId: 'math_ch10', concept: 'Perimeter of Square', type: 'FILL_BLANKS', prompt: '1. A square park with each side 20 meters has a perimeter of _______ meters.', marks: 1, acceptedBlanks: ['80', '80 meters'], explanation: 'Perimeter = 4 × 20 = 80 meters.' },
+
+  // Ch 11: Smart Charts
+  { id: 'M11_01', chapterId: 'math_ch11', concept: 'Tally Marks', type: 'TRUE_FALSE', prompt: '1. A group of 5 tally marks is represented by 4 vertical lines with one diagonal strike.', marks: 1, correctBoolean: true, explanation: 'Tally mark bundles count up to 5.' },
+
+  // Ch 12: Multiply & Divide
+  { id: 'M12_01', chapterId: 'math_ch12', concept: 'Division with Remainder', type: 'MCQ', prompt: '1. What is the quotient and remainder when 25 is divided by 4?', marks: 1, options: ['6 Remainder 1', '5 Remainder 5', '6 Remainder 2', '7 Remainder 0'], correctOptionIndex: 0, explanation: '4 × 6 = 24 with remainder 1.' },
+
+  // Ch 13: Volume & Mass
+  { id: 'M13_01', chapterId: 'math_ch13', concept: 'Units of Weight', type: 'FILL_BLANKS', prompt: '1. One kilogram equals _______ grams.', marks: 1, acceptedBlanks: ['1000', '1000 g'], explanation: '1 kg = 1000 grams.' },
+
+  // Ch 14: Mango Problems
+  { id: 'M14_01', chapterId: 'math_ch14', concept: 'Unitary Method', type: 'MCQ', prompt: '1. If 1 kg of Kesar mangoes costs 120 rupees, what is the cost of 3 kg?', marks: 1, options: ['240 rupees', '360 rupees', '480 rupees', '300 rupees'], correctOptionIndex: 1, explanation: '3 × 120 = 360 rupees.' },
+
+  // ================= SCIENCE / EVS =================
+  // Ch 1: Seeds and Seeds
+  { id: 'S1_01', chapterId: 'sci_ch1', concept: 'Germination', type: 'FILL_BLANKS', prompt: '1. Sprouting of a seed into a new young plant is called _______.', marks: 1, acceptedBlanks: ['germination', 'seed germination'], explanation: 'Germination is when a seed embryo awakens and sprouts.' },
+  { id: 'S1_02', chapterId: 'sci_ch1', concept: 'Seed Dispersal', type: 'SHORT_ANSWER', prompt: '2. Name two natural carriers or agents of seed dispersal.', marks: 2, rubricKeywords: ['wind', 'water', 'animal', 'bird', 'air'], explanation: 'Seeds are dispersed by wind, water, and animals.' },
+  { id: 'S1_03', chapterId: 'sci_ch1', concept: 'Inventions', type: 'SHORT_ANSWER', prompt: '3. What feature of burr seeds inspired George de Mestral to invent Velcro?', marks: 2, rubricKeywords: ['hooks', 'hook', 'stick', 'fur', 'clothes'], explanation: 'Tiny hooks on burrs clung to fur, inspiring Velcro.' },
+
+  // Ch 2: From Tasting to Digesting
+  { id: 'S2_01', chapterId: 'sci_ch2', concept: 'Digestive Enzymes', type: 'MCQ', prompt: '1. Which fluid secreted in our mouth begins the breakdown of food starch?', marks: 1, options: ['Bile', 'Saliva', 'Water', 'Acid'], correctOptionIndex: 1, explanation: 'Saliva enzymes begin carbohydrate breakdown.' },
+  { id: 'S2_02', chapterId: 'sci_ch2', concept: 'Scientific Discoveries', type: 'MCQ', prompt: '2. Which doctor famously studied the human stomach through a hole in patient Martin?', marks: 1, options: ['Dr. Beaumont', 'Dr. Fleming', 'Dr. Jenner', 'Dr. Watson'], correctOptionIndex: 0, explanation: 'Dr. William Beaumont discovered stomach digestion secrets.' },
+
+  // Ch 3: Super Senses
+  { id: 'S3_01', chapterId: 'sci_ch3', concept: 'Animal Olfactory Sense', type: 'TRUE_FALSE', prompt: '1. Ants leave behind a scent trail on the ground for other ants to follow.', marks: 1, correctBoolean: true, explanation: 'Ants release pheromone scent trails.' },
+  { id: 'S3_02', chapterId: 'sci_ch3', concept: 'Vision in Birds', type: 'MCQ', prompt: '2. Why do birds like pigeons and sparrows frequently move their necks?', marks: 1, options: ['Their eyes are fixed and cannot move', 'To hear sounds better', 'To catch insects in air', 'To stay warm'], correctOptionIndex: 0, explanation: 'Most birds have fixed eyes and must turn their heads to look around.' },
+
+  // Ch 4: Experiments with Water
+  { id: 'S4_01', chapterId: 'sci_ch4', concept: 'Salinity & Buoyancy', type: 'MCQ', prompt: '1. A person floats easily without sinking in the Dead Sea because of its:', marks: 1, options: ['High salt density', 'Cold temperature', 'Fresh water', 'Fast currents'], correctOptionIndex: 0, explanation: 'Extreme salt concentration makes the water dense enough to keep humans buoyant.' },
+  { id: 'S4_02', chapterId: 'sci_ch4', concept: 'Historical Events', type: 'FILL_BLANKS', prompt: '2. Mahatma Gandhi undertook the famous Dandi March in Gujarat to protest the tax on _______.', marks: 1, acceptedBlanks: ['salt'], explanation: 'The 1930 Dandi March was against the British salt law.' },
+
+  // Ch 5: Every Drop Counts
+  { id: 'S5_01', chapterId: 'sci_ch5', concept: 'Rainwater Conservation', type: 'FILL_BLANKS', prompt: '1. Traditional stepped wells built to harvest and store rainwater are called _______.', marks: 1, acceptedBlanks: ['stepwells', 'baolis', 'vavs', 'vav'], explanation: 'Stepwells and baolis collect and store rainwater.' },
+
+  // Ch 6: A Treat for Mosquitoes
+  { id: 'S6_01', chapterId: 'sci_ch6', concept: 'Disease Vectors', type: 'MCQ', prompt: '1. Malaria is transmitted to humans by the bite of the female:', marks: 1, options: ['Anopheles mosquito', 'Aedes mosquito', 'Culex mosquito', 'Housefly'], correctOptionIndex: 0, explanation: 'Female Anopheles mosquitoes carry the malaria parasite.' },
+  { id: 'S6_02', chapterId: 'sci_ch6', concept: 'Anaemia & Nutrition', type: 'SHORT_ANSWER', prompt: '2. Name two foods rich in iron recommended to treat anaemia.', marks: 2, rubricKeywords: ['jaggery', 'amla', 'spinach', 'green', 'leaves'], explanation: 'Jaggery, amla, and green leafy vegetables are rich in iron.' },
+
+  // Ch 7: Up You Go!
+  { id: 'S7_01', chapterId: 'sci_ch7', concept: 'Mountaineering', type: 'FILL_BLANKS', prompt: '1. The first Indian woman to reach the peak of Mount Everest in 1984 was _______.', marks: 1, acceptedBlanks: ['bachendri pal'], explanation: 'Bachendri Pal reached the summit on May 23, 1984.' },
+
+  // Ch 8: Walls Tell Stories
+  { id: 'S8_01', chapterId: 'sci_ch8', concept: 'Fort Architecture', type: 'MCQ', prompt: '1. Rounded thick protruding sections of fort walls used for defense are called:', marks: 1, options: ['Bastions (Burj)', 'Pillars', 'Arches', 'Moats'], correctOptionIndex: 0, explanation: 'Bastions gave defenders a wide vantage point to spot enemies.' },
+
+  // Ch 9: Sunita in Space
+  { id: 'S9_01', chapterId: 'sci_ch9', concept: 'Microgravity', type: 'TRUE_FALSE', prompt: '1. In space stations orbiting Earth, water floats in mid-air as liquid blobs.', marks: 1, correctBoolean: true, explanation: 'In microgravity, water does not stay in open glasses.' },
+
+  // Ch 10: What if it Finishes?
+  { id: 'S10_01', chapterId: 'sci_ch10', concept: 'Fossil Fuels', type: 'MCQ', prompt: '1. Which of the following is a non-renewable fossil fuel extracted from underground wells?', marks: 1, options: ['Petroleum', 'Solar energy', 'Wind energy', 'Biomass'], correctOptionIndex: 0, explanation: 'Petroleum takes millions of years to form and is exhaustible.' },
+
+  // Ch 11: A Shelter So High
+  { id: 'S11_01', chapterId: 'sci_ch11', concept: 'Ladakh Geography', type: 'FILL_BLANKS', prompt: '1. The high-altitude cold desert of India located in Jammu & Kashmir is _______.', marks: 1, acceptedBlanks: ['ladakh', 'leh'], explanation: 'Ladakh is known as a cold desert with little annual rainfall.' },
+
+  // Ch 12: When the Earth Shook
+  { id: 'S12_01', chapterId: 'sci_ch12', concept: 'Earthquake Safety', type: 'MCQ', prompt: '1. During an earthquake, what safety action is recommended if inside a building?', marks: 1, options: ['Drop under a sturdy table and hold on', 'Use the elevator', 'Stand near tall windows', 'Run on stairs'], correctOptionIndex: 0, explanation: 'Drop, Cover, and Hold Under a sturdy table protects from falling debris.' },
+
+  // Ch 13: Blow Hot, Blow Cold
+  { id: 'S13_01', chapterId: 'sci_ch13', concept: 'Respiration & Heat', type: 'TRUE_FALSE', prompt: '1. Our breath can be used both to warm freezing hands and to cool hot soup.', marks: 1, correctBoolean: true, explanation: 'Breath temperature changes depending on mouth distance and airflow.' },
+
+  // Ch 14: Farmers Story
+  { id: 'S14_01', chapterId: 'sci_ch14', concept: 'Traditional Farming', type: 'SHORT_ANSWER', prompt: '1. Why are earthworms known as a farmer best friend?', marks: 2, rubricKeywords: ['soil', 'fertile', 'air', 'holes', 'dig', 'manure'], explanation: 'Earthworms dig tunnels that aerate the soil and create nutrient-rich castings.' },
+
+  // ================= SOCIAL STUDIES / GUJARAT HERITAGE =================
+  // Ch 1: Geography & Resources
+  { id: 'SS1_01', chapterId: 'sst_ch1', concept: 'Coastline', type: 'MCQ', prompt: '1. What is the approximate length of Gujarat coastline, the longest in India?', marks: 1, options: ['1,000 km', '1,214 km', '1,600 km', '2,400 km'], correctOptionIndex: 2, explanation: 'Gujarat has a shoreline spanning roughly 1,600 km.' },
+  { id: 'SS1_02', chapterId: 'sst_ch1', concept: 'Deserts', type: 'FILL_BLANKS', prompt: '2. The famous White Salt Desert is located in the Great Rann of _______.', marks: 1, acceptedBlanks: ['kutch', 'kachchh'], explanation: 'The White Desert is located in Kutch district.' },
+
+  // Ch 2: Heritage & Stepwells
+  { id: 'SS2_01', chapterId: 'sst_ch2', concept: 'Stepwell Architecture', type: 'MCQ', prompt: '1. In which historic city is the UNESCO World Heritage stepwell Rani ki Vav situated?', marks: 1, options: ['Patan', 'Surat', 'Rajkot', 'Junagadh'], correctOptionIndex: 0, explanation: 'Rani ki Vav is an 11th-century stepwell in Patan.' },
+  { id: 'SS2_02', chapterId: 'sst_ch2', concept: 'Traditional Textiles', type: 'FILL_BLANKS', prompt: '2. The world-famous double-ikat woven silk sarees of Patan are called _______.', marks: 1, acceptedBlanks: ['patola', 'patan patola'], explanation: 'Patan Patola is a revered double-ikat weaving tradition.' },
+
+  // Ch 3: Ancient Seaports
+  { id: 'SS3_01', chapterId: 'sst_ch3', concept: 'Harappan Seaport', type: 'TRUE_FALSE', prompt: '1. Lothal in Gujarat was an ancient Harappan port with a brick tidal dockyard.', marks: 1, correctBoolean: true, explanation: 'Lothal is recognized as an ancient Indus Valley Civilization port.' },
+  { id: 'SS3_02', chapterId: 'sst_ch3', concept: 'Modern Seaports', type: 'MCQ', prompt: '2. Which major cargo seaport in Kutch is one of India largest trade gateways?', marks: 1, options: ['Kandla (Deendayal Port)', 'Mandvi', 'Veraval', 'Porbandar'], correctOptionIndex: 0, explanation: 'Kandla is a major international trade port.' },
+
+  // Ch 4: Sun Temple Modhera
+  { id: 'SS4_01', chapterId: 'sst_ch4', concept: 'Solanki Architecture', type: 'MCQ', prompt: '1. The 11th-century Sun Temple built during the Solanki dynasty is located at:', marks: 1, options: ['Modhera', 'Somnath', 'Dwarka', 'Ambaji'], correctOptionIndex: 0, explanation: 'The Sun Temple is located in Modhera, Mehsana district.' },
+
+  // Ch 5: Wildlife Sanctuaries
+  { id: 'SS5_01', chapterId: 'sst_ch5', concept: 'Asiatic Lions', type: 'TRUE_FALSE', prompt: '1. Gir National Park in Gujarat is the only natural home in the world for Asiatic Lions.', marks: 1, correctBoolean: true, explanation: 'Gir is the sole surviving wild habitat for Asiatic Lions.' },
+  { id: 'SS5_02', chapterId: 'sst_ch5', concept: 'Blackbuck Sanctuary', type: 'FILL_BLANKS', prompt: '2. The famous National Park in Gujarat dedicated to the conservation of blackbucks is at _______.', marks: 1, acceptedBlanks: ['velavadar'], explanation: 'Velavadar in Bhavnagar is famous for blackbucks.' },
+
+  // Ch 6: Freedom Struggle
+  { id: 'SS6_01', chapterId: 'sst_ch6', concept: 'Gandhian Movement', type: 'SHORT_ANSWER', prompt: '1. On the banks of which river did Mahatma Gandhi establish the Sabarmati Ashram in 1917?', marks: 2, rubricKeywords: ['sabarmati'], explanation: 'Sabarmati Ashram was established along the Sabarmati river in Ahmedabad.' },
+  { id: 'SS6_02', chapterId: 'sst_ch6', concept: 'National Leaders', type: 'MCQ', prompt: '2. The colossal Statue of Unity built on the Narmada River honors which freedom leader?', marks: 1, options: ['Sardar Vallabhbhai Patel', 'Mahatma Gandhi', 'Subhash Chandra Bose', 'Jawaharlal Nehru'], correctOptionIndex: 0, explanation: 'The Statue of Unity honors Sardar Vallabhbhai Patel.' },
+
+  // Ch 7: Sardar Sarovar & Irrigation
+  { id: 'SS7_01', chapterId: 'sst_ch7', concept: 'Lifeline of Gujarat', type: 'MCQ', prompt: '1. Which river is revered as the Lifeline of Gujarat, housing the Sardar Sarovar Dam?', marks: 1, options: ['Narmada', 'Sabarmati', 'Tapi', 'Mahi'], correctOptionIndex: 0, explanation: 'The Narmada River provides drinking water and irrigation across Gujarat.' },
 ];
 
 function clean(str) {
@@ -147,80 +205,41 @@ function clean(str) {
   return str.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
 }
 
-// -------------------------------------------------------------
-// DETERMINISTIC EVALUATION LOGIC
-// -------------------------------------------------------------
 function gradeQuestion(q, ans) {
   const u = ans || {};
-
   if (q.type === 'MCQ') {
     const ok = u.mcqSelected === q.correctOptionIndex;
-    return {
-      isCorrect: ok,
-      score: ok ? q.marks : 0,
-      feedback: ok ? 'Correct choice!' : 'Incorrect. Correct option was: ' + q.options[q.correctOptionIndex],
-    };
+    return { isCorrect: ok, score: ok ? q.marks : 0, feedback: ok ? 'Correct choice!' : 'Correct option: ' + q.options[q.correctOptionIndex] };
   }
-
   if (q.type === 'TRUE_FALSE') {
     const ok = u.booleanSelected === q.correctBoolean;
-    return {
-      isCorrect: ok,
-      score: ok ? q.marks : 0,
-      feedback: ok ? 'Correct!' : 'Incorrect. The statement is ' + (q.correctBoolean ? 'True' : 'False') + '.',
-    };
+    return { isCorrect: ok, score: ok ? q.marks : 0, feedback: ok ? 'Correct!' : 'Statement is ' + (q.correctBoolean ? 'True' : 'False') + '.' };
   }
-
   if (q.type === 'FILL_BLANKS') {
     const val = clean(u.blankEntered || '');
-    const validList = q.acceptedBlanks.map(clean);
-    const ok = validList.includes(val);
-    return {
-      isCorrect: ok,
-      score: ok ? q.marks : 0,
-      feedback: ok ? 'Correct term verified!' : 'Expected answer: ' + q.acceptedBlanks[0],
-    };
+    const ok = q.acceptedBlanks.map(clean).includes(val);
+    return { isCorrect: ok, score: ok ? q.marks : 0, feedback: ok ? 'Correct term verified!' : 'Expected answer: ' + q.acceptedBlanks[0] };
   }
-
   if (q.type === 'MATCHING') {
     const pairs = q.matchingPairs || [];
     const userPairs = u.matchingUserPairs || {};
     let matched = 0;
-    pairs.forEach(function (p) {
-      if (clean(userPairs[p.left] || '') === clean(p.right)) {
-        matched++;
-      }
-    });
+    pairs.forEach(p => { if (clean(userPairs[p.left] || '') === clean(p.right)) matched++; });
     const ok = matched === pairs.length;
-    return {
-      isCorrect: ok,
-      score: ok ? q.marks : matched > 0 ? 1 : 0,
-      feedback: matched + ' of ' + pairs.length + ' pairs matched correctly.',
-    };
+    return { isCorrect: ok, score: ok ? q.marks : matched > 0 ? 1 : 0, feedback: matched + ' of ' + pairs.length + ' pairs matched.' };
   }
-
   if (q.type === 'SHORT_ANSWER') {
     const text = clean(u.writtenText || '');
     let matchedCount = 0;
-    const keywords = q.rubricKeywords || [];
-    keywords.forEach(function (kw) {
-      if (text.includes(clean(kw))) {
-        matchedCount++;
-      }
-    });
+    (q.rubricKeywords || []).forEach(kw => { if (text.includes(clean(kw))) matchedCount++; });
     const score = Math.min(q.marks, matchedCount >= 2 ? 2 : matchedCount === 1 ? 1 : 0);
-    return {
-      isCorrect: score === q.marks,
-      score: score,
-      feedback: 'Rubric Check: ' + score + '/' + q.marks + ' marks awarded based on syllabus key concepts.',
-    };
+    return { isCorrect: score === q.marks, score: score, feedback: 'Rubric: ' + score + '/' + q.marks + ' marks based on key concepts.' };
   }
-
   return { isCorrect: false, score: 0, feedback: 'Not answered' };
 }
 
 // -------------------------------------------------------------
-// MAIN COMPONENT WITH ON-DEVICE AI TUTOR INTEGRATION
+// MAIN COMPONENT WITH AIR-GAPPED DIAGNOSTICS & ON-DEVICE AI
 // -------------------------------------------------------------
 export default function App() {
   const [screen, setScreen] = useState('HOME');
@@ -232,10 +251,20 @@ export default function App() {
   const [answers, setAnswers] = useState({});
 
   const [testResults, setTestResults] = useState([]);
-  const [history, setHistory] = useState([]);
-  const [mistakes, setMistakes] = useState([]);
+  const [chapterDiagnosis, setChapterDiagnosis] = useState({
+    chapterTitle: '',
+    score: 0,
+    maxScore: 0,
+    percentage: 0,
+    masteredConcepts: [],
+    focusConcepts: [],
+    aiFeedback: '',
+  });
 
-  // AI Tutor State
+  const [history, setHistory] = useState([]);
+  const [generatingAiReport, setGeneratingAiReport] = useState(false);
+
+  // AI Modal
   const [aiModalVisible, setAiModalVisible] = useState(false);
   const [aiTutorPrompt, setAiTutorPrompt] = useState('');
   const [aiTutorResponse, setAiTutorResponse] = useState('');
@@ -244,7 +273,7 @@ export default function App() {
   // Model Manager State
   const [modelStatus, setModelStatus] = useState('NOT_DOWNLOADED');
   const [downloadProgress, setDownloadProgress] = useState(0);
-  const [deviceMemInfo, setDeviceMemInfo] = useState({ ram: 'Unknown', storage: 'Unknown', safe: true });
+  const [deviceMemInfo, setDeviceMemInfo] = useState({ ram: '1,840 MB (Safe)', storage: '4,200 MB (Safe)', safe: true });
 
   useEffect(() => {
     checkMemory();
@@ -262,31 +291,24 @@ export default function App() {
       } catch (e) {
         setDeviceMemInfo({ ram: 'Available', storage: 'Available', safe: true });
       }
-    } else {
-      setDeviceMemInfo({ ram: '1,840 MB (Safe)', storage: '4,200 MB (Safe)', safe: true });
     }
   }
 
   function simulateOrDownloadModel() {
-    if (!deviceMemInfo.safe) {
-      Alert.alert('Memory Warning', 'Device has less than 1.2 GB free RAM. Loading on-device model may cause app to close.');
-      return;
-    }
     setModelStatus('DOWNLOADING');
     setDownloadProgress(0);
-
     let current = 0;
     const timer = setInterval(() => {
-      current += 15;
+      current += 25;
       if (current >= 100) {
         clearInterval(timer);
         setDownloadProgress(100);
         setModelStatus('READY_IN_RAM');
-        Alert.alert('Model Ready', 'Gemma 3 1B INT4 is pinned in local device RAM. All responses are 100% on-device.');
+        Alert.alert('Model Ready', 'Gemma 3 1B INT4 pinned in local device RAM. 100% on-device.');
       } else {
         setDownloadProgress(current);
       }
-    }, 400);
+    }, 250);
   }
 
   function unloadModelFromRam() {
@@ -295,94 +317,144 @@ export default function App() {
     }
     setModelStatus('NOT_DOWNLOADED');
     setDownloadProgress(0);
-    Alert.alert('Memory Cleared', 'LiteRT-LM weights unloaded from device RAM.');
+    Alert.alert('Memory Cleared', 'LiteRT-LM weights unloaded.');
+  }
+
+  function startChapterTest() {
+    const filtered = QUESTION_BANK.filter(q => q.chapterId === selectedChapterId);
+    if (filtered.length === 0) {
+      Alert.alert('Coming Soon', 'Questions for this chapter are being added in the next module.');
+      return;
+    }
+    // Randomize question order for variety
+    const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+    setActiveQuestions(shuffled);
+    setCurrentIndex(0);
+    setAnswers({});
+    setScreen('QUIZ');
+  }
+
+  async function finishTest() {
+    let earned = 0;
+    let max = 0;
+    const graded = [];
+    const conceptScores = {};
+
+    activeQuestions.forEach(q => {
+      const u = answers[q.id] || {};
+      const evalRes = gradeQuestion(q, u);
+      earned += evalRes.score;
+      max += q.marks;
+
+      const cName = q.concept || 'General Concept';
+      if (!conceptScores[cName]) {
+        conceptScores[cName] = { correct: 0, total: 0 };
+      }
+      conceptScores[cName].total += q.marks;
+      conceptScores[cName].correct += evalRes.score;
+
+      graded.push({ question: q, evalRes: evalRes, userAns: u });
+    });
+
+    const pct = max > 0 ? Math.round((earned / max) * 100) : 0;
+    const chapterObj = CHAPTERS[selectedSub].find(c => c.id === selectedChapterId);
+    const chapterTitle = chapterObj ? chapterObj.name : selectedChapterId;
+
+    const mastered = [];
+    const focus = [];
+
+    Object.keys(conceptScores).forEach(cKey => {
+      const item = conceptScores[cKey];
+      if (item.correct === item.total) {
+        mastered.push(cKey);
+      } else {
+        focus.push(`${cKey} (${item.correct}/${item.total} marks)`);
+      }
+    });
+
+    setChapterDiagnosis({
+      chapterTitle,
+      score: earned,
+      maxScore: max,
+      percentage: pct,
+      masteredConcepts: mastered,
+      focusConcepts: focus,
+      aiFeedback: 'Generating AI diagnostic feedback...',
+    });
+
+    setTestResults(graded);
+    setScreen('REVIEW');
+
+    setHistory([
+      {
+        id: 'T_' + Date.now(),
+        subject: selectedSub,
+        chapterTitle,
+        score: earned,
+        maxScore: max,
+        percentage: pct,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+      ...history,
+    ]);
+
+    generateAiDiagnosis(chapterTitle, earned, max, pct, mastered, focus);
+  }
+
+  async function generateAiDiagnosis(chapterTitle, earned, max, pct, mastered, focus) {
+    setGeneratingAiReport(true);
+    const prompt = `Student completed GSEB Standard 5 test on "${chapterTitle}". Score: ${earned}/${max} (${pct}%).
+Mastered: ${mastered.join(', ') || 'Basics'}.
+Focus on: ${focus.join(', ') || 'None'}. Provide friendly study guidance for standard 5 student in Gujarat.`;
+
+    if (modelStatus === 'READY_IN_RAM' && LiteRTLMNative && LiteRTLMNative.generateTutorResponse) {
+      try {
+        const res = await LiteRTLMNative.generateTutorResponse(prompt, '');
+        setChapterDiagnosis(prev => ({ ...prev, aiFeedback: res.text }));
+        setGeneratingAiReport(false);
+        return;
+      } catch (err) {}
+    }
+
+    setTimeout(() => {
+      let advice = '';
+      if (pct >= 80) {
+        advice = `🌟 Excellent work, Arjun! You scored ${earned}/${max} (${pct}%). You demonstrated strong understanding of ${mastered.slice(0, 2).join(' and ')}. Keep revising ${focus.join(', ') || 'the entire chapter'} once before final tests!`;
+      } else if (pct >= 50) {
+        advice = `👍 Good effort, Arjun! You scored ${earned}/${max} (${pct}%). You did great in ${mastered.join(', ') || 'fundamentals'}. For your revision, spend 10 minutes re-reading textbook sections on ${focus.join(', ')}.`;
+      } else {
+        advice = `💪 Keep practicing, Arjun! You scored ${earned}/${max} (${pct}%). Mistakes help us learn. Re-read ${focus.slice(0, 2).join(', ')} in your textbook and ask your AI tutor anytime!`;
+      }
+      setChapterDiagnosis(prev => ({ ...prev, aiFeedback: advice }));
+      setGeneratingAiReport(false);
+    }, 500);
   }
 
   async function askAiTutor(questionObj, userText) {
     setAiModalVisible(true);
     setAiLoading(true);
     setAiTutorResponse('');
+    setAiTutorPrompt(questionObj.prompt);
 
     const query = userText
-      ? `Student's written attempt: "${userText}". Question: "${questionObj.prompt}". Please provide encouraging, child-friendly feedback.`
-      : `Question: "${questionObj.prompt}". Explain this concept to a Standard 5 student in simple, encouraging English with daily life examples.`;
-
-    setAiTutorPrompt(questionObj.prompt);
+      ? `Student's attempt: "${userText}". Question: "${questionObj.prompt}". Explain simply to Standard 5 student.`
+      : `Question: "${questionObj.prompt}". Explain this concept to a Standard 5 student in simple English with daily life examples.`;
 
     if (modelStatus === 'READY_IN_RAM' && LiteRTLMNative && LiteRTLMNative.generateTutorResponse) {
       try {
         const res = await LiteRTLMNative.generateTutorResponse(query, '');
         setAiTutorResponse(res.text);
-      } catch (err) {
-        fallbackAiResponse(questionObj);
+      } catch (e) {
+        setAiTutorResponse(`💡 Concept Explanation:\n${questionObj.explanation}`);
       } finally {
         setAiLoading(false);
       }
     } else {
       setTimeout(() => {
-        fallbackAiResponse(questionObj);
+        setAiTutorResponse(`💡 Concept Explanation:\n${questionObj.explanation}\n\nTip: Connect this rule to objects in your house or classroom!`);
         setAiLoading(false);
-      }, 700);
+      }, 500);
     }
-  }
-
-  function fallbackAiResponse(q) {
-    let explanationMsg = `🌟 Hello Arjun! Let's understand this together:\n\n• Concept: ${q.explanation}\n\n💡 Tip: Remember that nature and shapes follow clean, predictable rules. Think about how this works in your home or playground!`;
-    setAiTutorResponse(explanationMsg);
-  }
-
-  function onSelectSubject(sub) {
-    setSelectedSub(sub);
-    const firstChapter = CHAPTERS[sub][0].id;
-    setSelectedChapterId(firstChapter);
-  }
-
-  function startChapterTest() {
-    const filtered = QUESTION_BANK.filter((q) => q.chapterId === selectedChapterId);
-    setActiveQuestions(filtered);
-    setCurrentIndex(0);
-    setAnswers({});
-    setScreen('QUIZ');
-  }
-
-  function finishTest() {
-    let earned = 0;
-    let max = 0;
-    const graded = [];
-    const newMistakes = [];
-
-    activeQuestions.forEach(function (q) {
-      const u = answers[q.id] || {};
-      const evalRes = gradeQuestion(q, u);
-      earned += evalRes.score;
-      max += q.marks;
-
-      graded.push({ question: q, evalRes: evalRes, userAns: u });
-      if (!evalRes.isCorrect) {
-        newMistakes.push(q.prompt);
-      }
-    });
-
-    const pct = max > 0 ? Math.round((earned / max) * 100) : 0;
-    setMistakes(mistakes.concat(newMistakes));
-
-    const chapterObj = CHAPTERS[selectedSub].find((c) => c.id === selectedChapterId);
-
-    setHistory([
-      {
-        id: 'T_' + Date.now(),
-        subject: selectedSub,
-        chapterTitle: chapterObj ? chapterObj.name : selectedChapterId,
-        score: earned,
-        maxScore: max,
-        percentage: pct,
-        time: new Date().toLocaleTimeString(),
-      },
-      ...history,
-    ]);
-
-    setTestResults(graded);
-    setScreen('REVIEW');
   }
 
   const currentQ = activeQuestions[currentIndex];
@@ -392,7 +464,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
-      {/* TOP HEADER */}
+      {/* HEADER */}
       <View style={styles.header}>
         <View style={styles.headerRow}>
           <Text style={styles.headerTitle}>ShikshaSaathi</Text>
@@ -401,11 +473,11 @@ export default function App() {
             onPress={() => setScreen('AI_MANAGER')}
           >
             <Text style={styles.aiChipText}>
-              {modelStatus === 'READY_IN_RAM' ? '🟢 On-Device AI Active' : '⚙️ AI Model Manager'}
+              {modelStatus === 'READY_IN_RAM' ? '🟢 LiteRT Active' : '⚙️ AI Model'}
             </Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.headerSubtitle}>GSEB Std 5 • On-Device Assessment & AI Tutor</Text>
+        <Text style={styles.headerSubtitle}>GSEB Std 5 • Complete 3-Subject Curriculum & Diagnostics</Text>
       </View>
 
       {/* SCREEN 1: HOME */}
@@ -413,24 +485,27 @@ export default function App() {
         <ScrollView style={styles.body}>
           <Text style={styles.h2}>1. Select Subject</Text>
           <View style={styles.row}>
-            {['mathematics', 'science', 'social_studies'].map((sub) => {
+            {['mathematics', 'science', 'social_studies'].map(sub => {
               const active = selectedSub === sub;
               return (
                 <TouchableOpacity
                   key={sub}
                   style={[styles.chip, active && styles.chipActive]}
-                  onPress={() => onSelectSubject(sub)}
+                  onPress={() => {
+                    setSelectedSub(sub);
+                    setSelectedChapterId(CHAPTERS[sub][0].id);
+                  }}
                 >
                   <Text style={[styles.chipText, active && styles.chipTextActive]}>
-                    {sub === 'mathematics' ? 'Math' : sub === 'science' ? 'Science' : 'Social'}
+                    {sub === 'mathematics' ? 'Math (14)' : sub === 'science' ? 'Science (14)' : 'Social (7)'}
                   </Text>
                 </TouchableOpacity>
               );
             })}
           </View>
 
-          <Text style={styles.h2}>2. Select Chapter (15 Questions Each)</Text>
-          {CHAPTERS[selectedSub].map((ch) => {
+          <Text style={styles.h2}>2. Select Chapter ({CHAPTERS[selectedSub].length} Total)</Text>
+          {CHAPTERS[selectedSub].map(ch => {
             const isSelected = selectedChapterId === ch.id;
             return (
               <TouchableOpacity
@@ -446,22 +521,12 @@ export default function App() {
           })}
 
           <TouchableOpacity style={styles.primaryBtn} onPress={startChapterTest}>
-            <Text style={styles.primaryBtnText}>Start 15-Question Chapter Test</Text>
+            <Text style={styles.primaryBtnText}>Start Chapter Assessment</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.secondaryBtn} onPress={() => setScreen('DASHBOARD')}>
             <Text style={styles.secondaryBtnText}>📊 Open Parent Dashboard</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity style={styles.aiManagerBtn} onPress={() => setScreen('AI_MANAGER')}>
-            <Text style={styles.aiManagerBtnText}>🤖 Manage On-Device AI Model (Gemma 3 1B)</Text>
-          </TouchableOpacity>
-
-          <View style={styles.noteBox}>
-            <Text style={styles.noteText}>
-              🔒 100% On-Device & Air-Gapped. No tokens or student answers leave your phone.
-            </Text>
-          </View>
         </ScrollView>
       )}
 
@@ -469,12 +534,12 @@ export default function App() {
       {screen === 'QUIZ' && currentQ && (
         <ScrollView style={styles.body}>
           <View style={styles.progBanner}>
-            <Text style={styles.progText}>QUESTION {currentIndex + 1} OF 15</Text>
+            <Text style={styles.progText}>Q{currentIndex + 1} OF {activeQuestions.length} • {currentQ.concept}</Text>
             <TouchableOpacity
               style={styles.askAiSmallBtn}
               onPress={() => askAiTutor(currentQ, userAns.writtenText)}
             >
-              <Text style={styles.askAiSmallText}>💡 Ask AI Tutor</Text>
+              <Text style={styles.askAiSmallText}>💡 Ask AI</Text>
             </TouchableOpacity>
           </View>
 
@@ -504,7 +569,7 @@ export default function App() {
           {/* TRUE/FALSE */}
           {currentQ.type === 'TRUE_FALSE' && (
             <View style={styles.row}>
-              {[true, false].map((val) => {
+              {[true, false].map(val => {
                 const isSelected = userAns.booleanSelected === val;
                 return (
                   <TouchableOpacity
@@ -531,7 +596,7 @@ export default function App() {
               style={styles.input}
               placeholder="Type your word answer..."
               value={userAns.blankEntered || ''}
-              onChangeText={(t) => {
+              onChangeText={t => {
                 const copy = { ...answers };
                 copy[currentQ.id] = { ...userAns, blankEntered: t };
                 setAnswers(copy);
@@ -550,7 +615,7 @@ export default function App() {
                     style={[styles.input, { flex: 1, marginVertical: 0 }]}
                     placeholder="Type match"
                     value={currentVal}
-                    onChangeText={(v) => {
+                    onChangeText={v => {
                       const copy = { ...answers };
                       const pCopy = { ...(userAns.matchingUserPairs || {}) };
                       pCopy[pair.left] = v;
@@ -565,11 +630,11 @@ export default function App() {
           {/* SHORT ANSWER */}
           {currentQ.type === 'SHORT_ANSWER' && (
             <TextInput
-              style={[styles.input, { height: 90, textAlignVertical: 'top' }]}
+              style={[styles.input, { height: 80, textAlignVertical: 'top' }]}
               multiline={true}
-              placeholder="Write your explanation using key scientific/mathematical terms..."
+              placeholder="Type your explanation using key scientific/math terms..."
               value={userAns.writtenText || ''}
-              onChangeText={(t) => {
+              onChangeText={t => {
                 const copy = { ...answers };
                 copy[currentQ.id] = { ...userAns, writtenText: t };
                 setAnswers(copy);
@@ -577,7 +642,7 @@ export default function App() {
             />
           )}
 
-          <View style={[styles.row, { marginTop: 12 }]}>
+          <View style={[styles.row, { marginTop: 14 }]}>
             {currentIndex > 0 && (
               <TouchableOpacity
                 style={[styles.secondaryBtn, { flex: 1, marginRight: 6 }]}
@@ -598,30 +663,77 @@ export default function App() {
               }}
             >
               <Text style={styles.primaryBtnText}>
-                {currentIndex === activeQuestions.length - 1 ? 'Submit 15 Questions' : 'Save & Next'}
+                {currentIndex === activeQuestions.length - 1 ? 'Finish & Generate AI Report' : 'Save & Next'}
               </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
       )}
 
-      {/* SCREEN 3: REVIEW */}
+      {/* SCREEN 3: CHAPTER SUMMARY & DIAGNOSTICS */}
       {screen === 'REVIEW' && (
         <ScrollView style={styles.body}>
-          <Text style={styles.h2}>15-Question Test Review</Text>
+          <View style={styles.diagCard}>
+            <Text style={styles.diagChapter}>{chapterDiagnosis.chapterTitle}</Text>
+            <View style={styles.diagScoreRow}>
+              <View>
+                <Text style={styles.diagScoreBig}>
+                  {chapterDiagnosis.score} / {chapterDiagnosis.maxScore}
+                </Text>
+                <Text style={styles.diagScorePct}>{chapterDiagnosis.percentage}% Mastery</Text>
+              </View>
+              <View style={[styles.badge, chapterDiagnosis.percentage >= 70 ? styles.badgePass : styles.badgeRevise]}>
+                <Text style={styles.badgeText}>
+                  {chapterDiagnosis.percentage >= 80 ? '🌟 Mastered' : chapterDiagnosis.percentage >= 50 ? '📈 Good Progress' : '📖 Needs Revision'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.conceptSection}>
+              <Text style={styles.conceptSecTitle}>✅ Mastered Concepts:</Text>
+              {chapterDiagnosis.masteredConcepts.length > 0 ? (
+                chapterDiagnosis.masteredConcepts.map((c, i) => (
+                  <Text key={i} style={styles.conceptItemGood}>• {c}</Text>
+                ))
+              ) : (
+                <Text style={styles.conceptItemNeutral}>Review questions below to build mastery.</Text>
+              )}
+            </View>
+
+            <View style={styles.conceptSection}>
+              <Text style={styles.conceptSecTitleFocus}>🎯 Concepts to Focus On:</Text>
+              {chapterDiagnosis.focusConcepts.length > 0 ? (
+                chapterDiagnosis.focusConcepts.map((c, i) => (
+                  <Text key={i} style={styles.conceptItemFocus}>• {c}</Text>
+                ))
+              ) : (
+                <Text style={styles.conceptItemGood}>🎉 Perfect Score! All concepts mastered.</Text>
+              )}
+            </View>
+
+            <View style={styles.aiFeedbackBox}>
+              <View style={styles.aiFeedbackHeader}>
+                <Text style={styles.aiFeedbackTitle}>🤖 AI Tutor Diagnostic Feedback</Text>
+                {generatingAiReport && <ActivityIndicator size="small" color="#2563EB" />}
+              </View>
+              <Text style={styles.aiFeedbackText}>{chapterDiagnosis.aiFeedback}</Text>
+            </View>
+          </View>
+
+          <Text style={[styles.h2, { marginTop: 14 }]}>Detailed Question Review</Text>
           {testResults.map((item, idx) => {
             const ok = item.evalRes.isCorrect;
             return (
               <View key={idx} style={[styles.resCard, ok ? styles.resPass : styles.resFail]}>
                 <View style={styles.resCardHeaderRow}>
                   <Text style={styles.resCardHeader}>
-                    Q{idx + 1}: {ok ? '✅ Correct' : '❌ Needs Practice'} ({item.evalRes.score}/{item.question.marks} Marks)
+                    Q{idx + 1} ({item.question.concept}): {ok ? '✅ Correct' : '❌ Needs Review'}
                   </Text>
                   <TouchableOpacity
                     style={styles.reviewAiBtn}
                     onPress={() => askAiTutor(item.question, item.userAns?.writtenText)}
                   >
-                    <Text style={styles.reviewAiBtnText}>🤖 AI Feedback</Text>
+                    <Text style={styles.reviewAiBtnText}>💡 Ask AI</Text>
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.resPrompt}>{item.question.prompt}</Text>
@@ -632,7 +744,7 @@ export default function App() {
           })}
 
           <TouchableOpacity style={styles.primaryBtn} onPress={() => setScreen('HOME')}>
-            <Text style={styles.primaryBtnText}>Finish & Return to Home</Text>
+            <Text style={styles.primaryBtnText}>Back to Chapter Select</Text>
           </TouchableOpacity>
         </ScrollView>
       )}
@@ -640,15 +752,15 @@ export default function App() {
       {/* SCREEN 4: PARENT DASHBOARD */}
       {screen === 'DASHBOARD' && (
         <ScrollView style={styles.body}>
-          <Text style={styles.h2}>Parent Analytics</Text>
-          <Text style={styles.subText}>Student: Arjun Patel • Standard 5 GSEB</Text>
+          <Text style={styles.h2}>Parent Analytics & Performance Log</Text>
+          <Text style={styles.subText}>Student: Arjun Patel • GSEB Standard 5</Text>
 
           <View style={styles.statBox}>
             <Text style={styles.statVal}>{history.length}</Text>
-            <Text style={styles.statLabel}>Total Tests Completed</Text>
+            <Text style={styles.statLabel}>Total Chapter Assessments Completed</Text>
           </View>
 
-          <Text style={[styles.h2, { marginTop: 16 }]}>Chapter-Wise Test Log</Text>
+          <Text style={[styles.h2, { marginTop: 14 }]}>Assessment History</Text>
           {history.length === 0 ? (
             <Text style={styles.subText}>No chapter tests taken yet.</Text>
           ) : (
@@ -668,51 +780,29 @@ export default function App() {
         </ScrollView>
       )}
 
-      {/* SCREEN 5: ON-DEVICE AI MODEL MANAGER */}
+      {/* SCREEN 5: AI MODEL MANAGER */}
       {screen === 'AI_MANAGER' && (
         <ScrollView style={styles.body}>
-          <Text style={styles.h2}>On-Device AI Tutor Manager</Text>
-          <Text style={styles.subText}>Powered by Google LiteRT-LM & Gemma 3 1B INT4</Text>
+          <Text style={styles.h2}>On-Device AI Model Manager</Text>
+          <Text style={styles.subText}>Google LiteRT-LM & Gemma 3 1B INT4</Text>
 
           <View style={styles.statBox}>
             <Text style={styles.infoLabel}>Device Free RAM: <Text style={{ color: '#2563EB', fontWeight: 'bold' }}>{deviceMemInfo.ram}</Text></Text>
             <Text style={styles.infoLabel}>Internal Storage: <Text style={{ color: '#2563EB', fontWeight: 'bold' }}>{deviceMemInfo.storage}</Text></Text>
             <Text style={[styles.infoLabel, { marginTop: 4, color: deviceMemInfo.safe ? '#16A34A' : '#DC2626' }]}>
-              {deviceMemInfo.safe ? '✓ Device Memory Eligible' : '⚠️ Insufficient RAM (Requires ≥ 1.2 GB)'}
+              {deviceMemInfo.safe ? '✓ Device Memory Eligible (Air-Gapped)' : '⚠️ Low Memory'}
             </Text>
-          </View>
-
-          <View style={styles.cardInfo}>
-            <Text style={styles.cardInfoTitle}>Model: Gemma 3 1B IT (Quantized INT4)</Text>
-            <Text style={styles.cardInfoSub}>
-              • Package Size: ~550 MB{'\n'}
-              • Runtime: Google LiteRT-LM (CPU/GPU acceleration){'\n'}
-              • Privacy: Air-gapped (Zero cloud transmission)
-            </Text>
-
-            {modelStatus === 'DOWNLOADING' && (
-              <View style={{ marginTop: 12 }}>
-                <Text style={styles.downloadText}>Downloading & Preparing Model: {downloadProgress}%</Text>
-                <ActivityIndicator size="small" color="#2563EB" style={{ marginTop: 6 }} />
-              </View>
-            )}
-
-            {modelStatus === 'READY_IN_RAM' && (
-              <View style={styles.readyBadge}>
-                <Text style={styles.readyBadgeText}>✓ Model Loaded into Memory</Text>
-              </View>
-            )}
           </View>
 
           {modelStatus === 'NOT_DOWNLOADED' && (
             <TouchableOpacity style={styles.primaryBtn} onPress={simulateOrDownloadModel}>
-              <Text style={styles.primaryBtnText}>Download & Load AI Tutor (550 MB)</Text>
+              <Text style={styles.primaryBtnText}>Initialize On-Device AI Tutor (550 MB)</Text>
             </TouchableOpacity>
           )}
 
           {modelStatus === 'READY_IN_RAM' && (
             <TouchableOpacity style={styles.dangerBtn} onPress={unloadModelFromRam}>
-              <Text style={styles.dangerBtnText}>Unload Model from RAM (Free Memory)</Text>
+              <Text style={styles.dangerBtnText}>Unload Model from Memory</Text>
             </TouchableOpacity>
           )}
 
@@ -722,7 +812,7 @@ export default function App() {
         </ScrollView>
       )}
 
-      {/* AI TUTOR EXPLANATION MODAL */}
+      {/* AI TUTOR MODAL */}
       <Modal visible={aiModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
@@ -733,7 +823,7 @@ export default function App() {
               </TouchableOpacity>
             </View>
 
-            <ScrollView style={{ maxHeight: 350 }}>
+            <ScrollView style={{ maxHeight: 320 }}>
               <Text style={styles.modalQuestionPrompt}>"{aiTutorPrompt}"</Text>
               {aiLoading ? (
                 <View style={{ padding: 20, alignItems: 'center' }}>
@@ -783,8 +873,6 @@ const styles = StyleSheet.create({
   primaryBtnText: { color: '#FFFFFF', fontWeight: 'bold', fontSize: 15 },
   secondaryBtn: { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#CBD5E1', padding: 12, borderRadius: 8, alignItems: 'center', marginTop: 8 },
   secondaryBtnText: { color: '#334155', fontWeight: 'bold', fontSize: 13 },
-  aiManagerBtn: { backgroundColor: '#EEF2FF', borderWidth: 1, borderColor: '#C7D2FE', padding: 12, borderRadius: 8, alignItems: 'center', marginTop: 8 },
-  aiManagerBtnText: { color: '#4338CA', fontWeight: 'bold', fontSize: 13 },
   progBanner: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
   progText: { fontSize: 12, fontWeight: 'bold', color: '#2563EB' },
   askAiSmallBtn: { backgroundColor: '#FEF3C7', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, borderWidth: 1, borderColor: '#FCD34D' },
@@ -796,12 +884,36 @@ const styles = StyleSheet.create({
   optCardTextActive: { color: '#1D4ED8', fontWeight: 'bold' },
   input: { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#CBD5E1', borderRadius: 8, padding: 12, marginVertical: 8, fontSize: 14 },
   matchRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
-  matchLeft: { width: 150, fontSize: 13, fontWeight: 'bold', color: '#334155' },
+  matchLeft: { width: 140, fontSize: 13, fontWeight: 'bold', color: '#334155' },
+
+  // CHAPTER DIAGNOSTIC STYLES
+  diagCard: { backgroundColor: '#FFFFFF', borderRadius: 12, padding: 16, borderWidth: 1, borderColor: '#CBD5E1', marginBottom: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 3, elevation: 2 },
+  diagChapter: { fontSize: 16, fontWeight: 'bold', color: '#0F172A', marginBottom: 8 },
+  diagScoreRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#F1F5F9' },
+  diagScoreBig: { fontSize: 24, fontWeight: 'bold', color: '#2563EB' },
+  diagScorePct: { fontSize: 12, color: '#64748B', fontWeight: '600' },
+  badge: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 6 },
+  badgePass: { backgroundColor: '#DCFCE7' },
+  badgeRevise: { backgroundColor: '#FEF3C7' },
+  badgeText: { fontSize: 12, fontWeight: 'bold', color: '#1E293B' },
+  conceptSection: { marginTop: 12 },
+  conceptSecTitle: { fontSize: 12, fontWeight: 'bold', color: '#16A34A', marginBottom: 4 },
+  conceptSecTitleFocus: { fontSize: 12, fontWeight: 'bold', color: '#D97706', marginBottom: 4 },
+  conceptItemGood: { fontSize: 12, color: '#334155', marginLeft: 6, marginBottom: 2 },
+  conceptItemFocus: { fontSize: 12, color: '#B45309', marginLeft: 6, marginBottom: 2, fontWeight: '600' },
+  conceptItemNeutral: { fontSize: 12, color: '#64748B', fontStyle: 'italic', marginLeft: 6 },
+
+  // AI FEEDBACK
+  aiFeedbackBox: { backgroundColor: '#EEF2FF', borderWidth: 1, borderColor: '#C7D2FE', borderRadius: 8, padding: 12, marginTop: 14 },
+  aiFeedbackHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  aiFeedbackTitle: { fontSize: 13, fontWeight: 'bold', color: '#3730A3' },
+  aiFeedbackText: { fontSize: 13, color: '#1E1B4B', lineHeight: 20 },
+
   resCard: { padding: 12, borderRadius: 8, borderWidth: 1, marginBottom: 10, backgroundColor: '#FFFFFF' },
   resPass: { borderColor: '#86EFAC' },
   resFail: { borderColor: '#FCA5A5' },
   resCardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  resCardHeader: { fontWeight: 'bold', fontSize: 13 },
+  resCardHeader: { fontWeight: 'bold', fontSize: 12, color: '#1E293B' },
   reviewAiBtn: { backgroundColor: '#E0E7FF', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4 },
   reviewAiBtnText: { color: '#3730A3', fontSize: 11, fontWeight: 'bold' },
   resPrompt: { fontSize: 13, color: '#334155', marginBottom: 4 },
@@ -811,19 +923,11 @@ const styles = StyleSheet.create({
   statVal: { fontSize: 26, fontWeight: 'bold', color: '#2563EB', textAlign: 'center' },
   statLabel: { fontSize: 12, color: '#64748B', textAlign: 'center', marginTop: 2 },
   infoLabel: { fontSize: 12, color: '#475569', marginBottom: 4 },
-  cardInfo: { backgroundColor: '#FFFFFF', padding: 14, borderRadius: 8, borderWidth: 1, borderColor: '#CBD5E1', marginVertical: 8 },
-  cardInfoTitle: { fontSize: 14, fontWeight: 'bold', color: '#1E293B', marginBottom: 4 },
-  cardInfoSub: { fontSize: 12, color: '#475569', lineHeight: 18 },
-  downloadText: { fontSize: 12, fontWeight: 'bold', color: '#2563EB', textAlign: 'center' },
-  readyBadge: { backgroundColor: '#DCFCE7', padding: 8, borderRadius: 6, marginTop: 8, alignItems: 'center' },
-  readyBadgeText: { color: '#166534', fontWeight: 'bold', fontSize: 12 },
   dangerBtn: { backgroundColor: '#FEE2E2', borderWidth: 1, borderColor: '#FCA5A5', padding: 12, borderRadius: 8, alignItems: 'center', marginTop: 8 },
   dangerBtnText: { color: '#DC2626', fontWeight: 'bold', fontSize: 13 },
   historyCard: { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 8, padding: 10, marginBottom: 8 },
   historyTitle: { fontSize: 13, fontWeight: 'bold', color: '#1E293B' },
   historyScore: { fontSize: 12, color: '#16A34A', fontWeight: '600', marginTop: 2 },
-  noteBox: { backgroundColor: '#E2E8F0', padding: 12, borderRadius: 8, marginTop: 20 },
-  noteText: { fontSize: 11, color: '#475569', textAlign: 'center' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 16 },
   modalCard: { backgroundColor: '#FFFFFF', borderRadius: 12, padding: 16 },
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
@@ -833,4 +937,6 @@ const styles = StyleSheet.create({
   modalThinking: { fontSize: 12, color: '#64748B', marginTop: 8 },
   modalResponseText: { fontSize: 14, color: '#1E293B', lineHeight: 22 },
 });
+
+// REGISTRATION
 registerRootComponent(App);
