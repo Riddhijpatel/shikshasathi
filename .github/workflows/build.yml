@@ -40,14 +40,12 @@ jobs:
 
       - name: Fix Missing Colors (Light & Dark Mode)
         run: |
-          # 1. Normal values
           mkdir -p android/app/src/main/res/values
           if [ ! -f android/app/src/main/res/values/colors.xml ]; then
             echo '<resources><color name="splashscreen_background">#1E293B</color></resources>' > android/app/src/main/res/values/colors.xml
           else
             grep -q "splashscreen_background" android/app/src/main/res/values/colors.xml || sed -i 's|</resources>|  <color name="splashscreen_background">#1E293B</color>\n</resources>|' android/app/src/main/res/values/colors.xml
           fi
-          # 2. Night values (prevents dark mode AAPT crash)
           mkdir -p android/app/src/main/res/values-night
           if [ ! -f android/app/src/main/res/values-night/colors.xml ]; then
             echo '<resources><color name="splashscreen_background">#1E293B</color></resources>' > android/app/src/main/res/values-night/colors.xml
@@ -130,11 +128,24 @@ jobs:
           EOF
 
       # -------------------------------------------------------------
-      # ⬇️ THE FIX: Bundle Offline JS & Assets (Fixes Red Screen Crash) ⬇️
+      # ⬇️ THE FIX: Generate Metro Config & Bundle Offline JS ⬇️
       # -------------------------------------------------------------
+      - name: Ensure Metro Configuration Exists (Fixes No Metro config found)
+        run: |
+          cat << 'EOF' > metro.config.js
+          const { getDefaultConfig } = require('expo/metro-config');
+          module.exports = getDefaultConfig(__dirname);
+          EOF
+
       - name: Bundle JavaScript & Assets for Standalone APK
         run: |
           mkdir -p android/app/src/main/assets
+          npx expo export:embed \
+            --platform android \
+            --dev false \
+            --entry-file App.js \
+            --bundle-output android/app/src/main/assets/index.android.bundle \
+            --assets-dest android/app/src/main/res/ || \
           npx react-native bundle \
             --platform android \
             --dev false \
@@ -142,6 +153,25 @@ jobs:
             --bundle-output android/app/src/main/assets/index.android.bundle \
             --assets-dest android/app/src/main/res/
 
+
+      - name: Create Android Assets Folder
+        run: |
+          mkdir -p android/app/src/main/assets
+          mkdir -p android/app/src/main/res
+          rm -rf android/app/src/main/res/drawable-*
+          rm -rf android/app/src/main/res/raw
+
+      - name: Bundle JavaScript & Assets for Standalone APK
+        run: |
+          npx react-native bundle \
+            --platform android \
+            --dev false \
+            --entry-file App.js \
+            --bundle-output android/app/src/main/assets/index.android.bundle \
+            --assets-dest android/app/src/main/res/
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
       - name: Grant Execute Permission to Gradle
         run: chmod +x android/gradlew
 
