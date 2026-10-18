@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   NativeModules,
 } from 'react-native';
+import { registerRootComponent } from 'expo'; 
 
 const LiteRTLMNative = NativeModules.LiteRTLM;
 
@@ -832,3 +833,4 @@ const styles = StyleSheet.create({
   modalThinking: { fontSize: 12, color: '#64748B', marginTop: 8 },
   modalResponseText: { fontSize: 14, color: '#1E293B', lineHeight: 22 },
 });
+registerRootComponent(App);
